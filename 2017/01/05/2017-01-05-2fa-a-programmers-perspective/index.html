@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="深入理解双因子认证，使用google验证器搭建双因子认证服务" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="双因子认证 google验证器 2fa totp hotp Google Authenticator two-factor authentication" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2017/01/05/2017-01-05-2fa-a-programmers-perspective/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>深入理解双因子认证 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      深入理解双因子认证
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2017-01-05
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/devops/">devops</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8C%E5%9B%A0%E5%AD%90%E8%AE%A4%E8%AF%81%E7%9A%84%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">双因子认证的相关概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8C%E5%9B%A0%E5%AD%90%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">双因子认证的实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81%E7%9A%84%E7%94%9F%E6%88%90%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">一次性密码的生成过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8google-authenticator%EF%BC%8C%E5%BC%80%E5%90%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%8C%E5%9B%A0%E5%AD%90%E8%AE%A4%E8%AF%81"><span class="toc-number">4.</span> <span class="toc-text">使用google-authenticator，开启服务器双因子认证</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>去年年初，让ops在服务器上开启了基于google-authenticator的双因子认证。最近花了点时间进行深入了解，记录如下。</p>
+<span id="more"></span>
+
+<h1 id="双因子认证的相关概念"><a href="#双因子认证的相关概念" class="headerlink" title="双因子认证的相关概念"></a>双因子认证的相关概念</h1><p>双因子认证（Two-factor authentication，也叫2FA），是一种通过组合两种不同的验证方式进行用户身份验证的机制。Google在2011年3月份，宣布在线上使用双因子认证，MSN和Yahoo紧随其后。</p>
+<p>双因子认证，除了需要验证用户名密码外，还要结合另外一种实物设备，如Rsa令牌，或者手机。</p>
+<p>如果我们把传统的用户名密码验证称为单因子认证（1FA），那么对比双因子认证（2FA），他们的区别如下：</p>
+<blockquote>
+<p>1FA - What you know (e.g. a password, a pin)</p>
+</blockquote>
+<blockquote>
+<p>2FA - What you have (e.g. a phone, a hardware token)</p>
+</blockquote>
+<blockquote>
+<p>3FA - What you are (e.g. your fingerprints, you retina)</p>
+</blockquote>
+<p>双因子认证的产品大致可以分成两类：</p>
+<ul>
+<li>可以产生token的硬件设备</li>
+<li>智能手机的app</li>
+</ul>
+<p>手机短信验证码，登录微信公众号时的扫码确认都可以称为双因子认证。</p>
+<p>双因子认证，还会结合一个只有你有的硬件设备。只要这个专属的硬件设备不丢失（察觉这个设备丢失，比用户名密码泄露，会容易很多），就可以大大地提升账号的安全性。</p>
+<h1 id="双因子认证的实现"><a href="#双因子认证的实现" class="headerlink" title="双因子认证的实现"></a>双因子认证的实现</h1><p>双因子认证的流程如下：</p>
+<img src="/images/2fa/flow.png" class="" title="Two-factor authentication flow">
+
+<p>认证过程中涉及的token，一般会使用一次性密码(<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/One-time_password">One-time password</a>)，相关实现有：</p>
+<ul>
+<li>HOTP: 基于次数的一次性密码（<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc4226">HMAC-Based One-Time Password</a>）</li>
+<li>TOTP: 基于时间的一次性密码（<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc6238">Time-Based One-Time Password</a>）</li>
+</ul>
+<p><code>HOTP</code>和<code>TOTP</code>的实现都基于<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2104">HMAC-SHA-1</a>算法。</p>
+<p><code>HOTP</code>的生成算法如下</p>
+<pre><code>HOTP(K,C) = Truncate(HMAC-SHA-1(K,C))
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>C</code>是一个8-byte的自增变量。对于客户端，每生成一次性密码，其值加1。对于服务端，每次成功认证客户端产生的一次性密码，其值加1。在<code>HOTP</code>生成（客户端）和验证（服务端）过程中，C的值必须同步。</li>
+<li><code>K</code>是客户端和服务端使用的共享密钥，每个客户端的<code>K</code>应该都是唯一的。</li>
+</ul>
+<p>生成步骤如下：</p>
+<pre><code>Step 1: 使用HMAC-SHA-1算法，利用C和K，生成一个长度为20-byte的40个十六进制字符，即：HS = HMAC-SHA-1(K,C)
+Step 2: 根据前面产品的字符串`HS`，生成一个长度为4-byte的8个十六进制字符，即：Sbits = DT(HS)，DT是根据HS，动态产生Sbits的方法，后面的示例中会提到
+Step 3: 根据前面的Sbits，计算一个HOTP的值，一般为6位数字。
+</code></pre>
+<blockquote>
+<p>2 nibbles (2 hex characters) &#x3D; 1-byte</p>
+</blockquote>
+<p><code>TOTP</code>可以当做是<code>HOTP</code>算法的一个变种，可以将<code>TOTP</code>的生成算法定义为：</p>
+<pre><code>TOTP = HOTP(K, T)
+</code></pre>
+<p><code>K</code>同<code>HOTP</code>算法中<code>K</code>的定义，是客户端和服务端使用的共享密钥，<code>T</code>是一个整数，定义如下：</p>
+<pre><code>T = floor((Current Unix time - T0) / X)
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>T0</code>是起始的Unix Time，默认为0</li>
+<li><code>X</code>是<code>T</code>增长的步长，默认为30</li>
+</ul>
+<p>即<code>T</code>是以30为步长，当前的Unix Time距初始的Unix Time<code>T0</code>增长的数量。</p>
+<p>如果<code>T0</code>&#x3D;0，<code>X</code>&#x3D;30，那么当此刻的Unix time是59时，<code>T</code>&#x3D;1，当此刻的Unix time为60时，<code>T</code>&#x3D;2。<code>TOTP</code>算法生成的一次性密码，就会每30s变更一次。</p>
+<h1 id="一次性密码的生成过程"><a href="#一次性密码的生成过程" class="headerlink" title="一次性密码的生成过程"></a>一次性密码的生成过程</h1><p>本文以HMAC-SHA-1算法生成的字符串<code>HS</code>的值是<code>0215a7d8c15b492e21116482b6d34fc4e1a9f6ba</code>为例，介绍一次性密码的生成过程。</p>
+<p>如果使用<code>TOTP</code>算法进行双因子认证，要让用户在30s内输入40个十六进制的字符，这是一件很难想象的事情。所以我们需要想个办法，将<code>HS</code>转换地更加便于输入，而又不失安全性。这就是前面提到的DT（Dynamic Truncation）的处理过程。</p>
+<p>为了更清晰地展示生成过程，用下图表示<code>HS</code>：</p>
+<img src="/images/2fa/hotp_step1.png" class="" title="Two-factor authentication step1">
+
+<p>前面的图中包含40个字符，每个字符都占4-bits（有16个可能的值0-15），被分成了20组单独的字符串。</p>
+<p>我们先去找<code>HS</code>的低4位（最后一个字符），作为截取字符串的起始位置。在我们的例子里，最后一个字符是<code>a</code>：</p>
+<img src="/images/2fa/hotp_step2.png" class="" title="Two-factor authentication step2">
+
+<p>将十六进制的字符<code>a</code>转成十进制数是<code>10</code>。</p>
+<p>我们将第1组字符串的偏移量用<code>0</code>表示，以此类推，如下：</p>
+<img src="/images/2fa/hotp_step3.png" class="" title="Two-factor authentication step3">
+
+<p>然后，从字符串<code>HS</code>的第<code>10</code>个偏移量开始，截取<code>4</code>组字符串（或者是接下来的31-bits）。</p>
+<blockquote>
+<p>这样截取的最大偏移量是15+4&#x3D;19，刚好没有越界</p>
+</blockquote>
+<p>因此，我们通过DT（Dynamic Truncation）处理，将<code>HS</code>转换后得到的字符串是<code>6482b6d3</code>：</p>
+<img src="/images/2fa/hotp_step4.png" class="" title="Two-factor authentication step4">
+
+<p>将十六进制的<code>6482b6d3</code>转成十进制数是<code>1686288083</code>。</p>
+<p>因为我们需要一个6位的数字，所以和<code>1000000</code>进行取模运算：</p>
+<pre><code>1686288083 modulo 1000000
+</code></pre>
+<p>最后的结果是：</p>
+<pre><code>288083
+</code></pre>
+<h1 id="使用google-authenticator，开启服务器双因子认证"><a href="#使用google-authenticator，开启服务器双因子认证" class="headerlink" title="使用google-authenticator，开启服务器双因子认证"></a>使用google-authenticator，开启服务器双因子认证</h1><p>首先，去你喜欢的android应用市场，或者apple的appStore去安装：“Google Authenticator（google身份验证器）”。</p>
+<p>然后登录要开启双因子认证登录的服务器，进行下面的操作。</p>
+<p>安装依赖</p>
+<pre><code>yum -y install gcc gcc-c++ make wget pam-devel
+</code></pre>
+<p>安装Google Authenticator</p>
+<pre><code>wget http://google-authenticator.googlecode.com/files/libpam-google-authenticator-1.0-source.tar.bz2
+tar jxvf libpam-google-authenticator-1.0-source.tar.bz2
+cd libpam-google-authenticator-1.0
+make
+sudo make install
+</code></pre>
+<p>配置SSH登录时调用google-authenticator模块</p>
+<p>编辑文件<code>/etc/pam.d/sshd</code>，添加：</p>
+<pre><code>auth       required     pam_google_authenticator.so
+</code></pre>
+<p>编辑文件<code>/etc/ssh/sshd_config</code>，在文件中查找<code>ChallengeResponseAuthentication</code>和<code>UsePAM</code>，修改为如下内容：</p>
+<pre><code>ChallengeResponseAuthentication yes
+UsePAM yes
+</code></pre>
+<p>重启ssh</p>
+<pre><code>sudo service ssh restart
+</code></pre>
+<p>下面是配置Google Authenticator的相关步骤。</p>
+<p>如果要为用户<code>zhangsan</code>添加ssh登录时的双因子认证，执行如下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su - zhangsan</span><br><span class="line">google-authenticator</span><br></pre></td></tr></table></figure>
+
+<p>会出现一串问题，让你选<code>y</code>或者<code>n</code>。</p>
+<pre><code>Do you want authentication tokens to be time-based (y/n) y
+https://www.google.com/chart?chs=200x200&amp;chld=M|0&amp;cht=qr&amp;chl=otpauth://totp/zhangsan@ali%3Fsecret%3DWKHM6UVJNTPYSPTQ
+Your new secret key is: WKHM6UVJNTPYSPTQ
+Your verification code is 434260
+Your emergency scratch codes are:
+30287010
+70585905
+68748337
+15176712
+38041521
+</code></pre>
+<p>上面的这一步，会生成一个base32编码的共享密钥<code>WKHM6UVJNTPYSPTQ</code>，即前面的<code>K</code>，用于在客户端进行绑定（如果可以翻墙的话，实际上会看到一张二维码，使用Google Authenticator app扫码即可以完成绑定）。</p>
+<p>共享密钥使用base32而非base64的原因如下：</p>
+<ul>
+<li>base32编码的字符串，包含了大写英文字母和数字2-7。不会因字体显示问题，把1，8，0和’I’,’B’, ‘O’混淆，更利于输入。</li>
+<li>base32编码的字符串，出现在url中时，可以不用进行url编码处理（encode），便于直接使用生成二维码的web服务。</li>
+</ul>
+<p>同时，基于当前的Unix time，生成了一个动态验证码<code>434260</code>，可用于测试。并生成了5个应急备用验证码（上面的emergency scratch codes），可以在绑定设备丢失的情况下使用（每个应急码只能使用一次）。</p>
+<p>剩下的问题，没有特殊癖好，可以都选<code>y</code>。</p>
+<pre><code>Do you want me to update your &quot;/home/zhangsan/.google_authenticator&quot; file (y/n) y
+
+Do you want to disallow multiple uses of the same authentication
+token? This restricts you to one login about every 30s, but it increases
+your chances to notice or even prevent man-in-the-middle attacks (y/n) y
+
+By default, tokens are good for 30 seconds and in order to compensate for
+possible time-skew between the client and the server, we allow an extra
+token before and after the current time. If you experience problems with poor
+time synchronization, you can increase the window from its default
+size of 1:30min to about 4min. Do you want to do so (y/n) y
+
+If the computer that you are logging into isn&#39;t hardened against brute-force
+login attempts, you can enable rate-limiting for the authentication module.
+By default, this limits attackers to no more than 3 login attempts every 30s.
+Do you want to enable rate-limiting (y/n) y
+</code></pre>
+<p>之后，ssh登录服务器时，会看到类似这样的提示：</p>
+<pre><code>verification code:
+</code></pre>
+<p>这时，打开手机上的google身份验证器App，输入对应的code，如下：</p>
+<img src="/images/2fa/google-authenticator.png" class="" title="google 验证器 flow">
+
+<p>reference：</p>
+<p>[^1] <a target="_blank" rel="noopener" href="https://pthree.org/2014/04/15/time-based-one-time-passwords-how-it-works/">https://pthree.org/2014/04/15/time-based-one-time-passwords-how-it-works/</a></p>
+<p>[^2] <a target="_blank" rel="noopener" href="https://garbagecollected.org/2014/09/14/how-google-authenticator-works/">https://garbagecollected.org/2014/09/14/how-google-authenticator-works/</a></p>
+<p>[^3] <a target="_blank" rel="noopener" href="https://www.blackmoreops.com/2014/06/26/securing-ssh-two-factor-authentication-using-google-authenticator/">https://www.blackmoreops.com/2014/06/26/securing-ssh-two-factor-authentication-using-google-authenticator/</a></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2017/01/05/2017-01-05-2fa-a-programmers-perspective/">https://blog.gaoyuan.xyz/2017/01/05/2017-01-05-2fa-a-programmers-perspective/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/devops/">devops</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2017/12/14/2017-12-14-use-opcache-to-deploy-php/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">基于Opcache发布php项目</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2016/11/17/2016-11-17-mac-terminal-cross-gfw/">  
+        <span class="next-text nav-default">mac终端穿墙技术汇总</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

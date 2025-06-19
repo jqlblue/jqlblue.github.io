@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="电商平台涉及相关的概念，业务架构，技术架构，电商本质，优势，劣势" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="电商 电子商务 架构 概念" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2014/09/22/2014-09-22-e-commerce-idea-collection/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>电商相关概念整理 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      电商相关概念整理
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2014-09-22
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/collect/">collect</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">电子商务模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.</span> <span class="toc-text">电商网站解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%8F%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">前台系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%90%A5%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0"><span class="toc-number">2.2.</span> <span class="toc-text">运营管理后台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.3.</span> <span class="toc-text">基础服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E4%BE%9B%E5%8F%82%E8%80%83%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.4.</span> <span class="toc-text">可供参考的系统架构示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E9%9D%9E%E5%8A%9F%E8%83%BD%E6%80%A7%E6%8C%87%E6%A0%87"><span class="toc-number">3.</span> <span class="toc-text">技术架构非功能性指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E6%95%88%E7%8E%87"><span class="toc-number">3.1.</span> <span class="toc-text">1. 系统效率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="toc-number">3.2.</span> <span class="toc-text">2. 可扩展性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">3.3.</span> <span class="toc-text">3. 安全性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">3.4.</span> <span class="toc-text">4. 可用性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%95%86%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">电商的特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">4.1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%82%E5%9C%BA"><span class="toc-number">4.2.</span> <span class="toc-text">市场</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">4.3.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A3%E5%8A%BF"><span class="toc-number">4.4.</span> <span class="toc-text">劣势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%95%86%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">5.</span> <span class="toc-text">电商的本质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%85%88%EF%BC%8C%E7%94%B5%E5%95%86%E5%BA%94%E9%87%8D%E6%96%B0%E7%A1%AE%E7%AB%8B%E6%B6%88%E8%B4%B9%E8%80%85%E5%9C%B0%E4%BD%8D"><span class="toc-number">5.1.</span> <span class="toc-text">首先，电商应重新确立消费者地位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E6%AC%A1%EF%BC%8C%E7%94%B5%E5%95%86%E5%BA%94%E9%87%8D%E6%96%B0%E5%A1%91%E9%80%A0%E4%BA%A7%E4%B8%9A%E7%94%9F%E6%80%81"><span class="toc-number">5.2.</span> <span class="toc-text">其次，电商应重新塑造产业生态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%8D%E6%AC%A1%EF%BC%8C%E7%94%B5%E5%95%86%E5%BA%94%E9%87%8D%E6%96%B0%E6%9E%84%E5%BB%BA%E7%BB%8F%E6%B5%8E%E7%90%86%E8%AE%BA%E5%92%8C%E5%93%81%E7%89%8C%E6%B3%95%E5%88%99"><span class="toc-number">5.3.</span> <span class="toc-text">再次，电商应重新构建经济理论和品牌法则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E4%B8%9A%E5%8A%A1%E6%88%98%E7%95%A5%E6%9E%B6%E6%9E%84"><span class="toc-number">6.</span> <span class="toc-text">相关业务战略架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9C%8D%E5%8A%A1%E5%AF%B9%E8%B1%A1"><span class="toc-number">6.1.</span> <span class="toc-text">1. 服务对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%B7%E5%80%BC%E6%8F%90%E4%BE%9B"><span class="toc-number">6.2.</span> <span class="toc-text">2. 价值提供</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E4%B8%BA%E4%BA%A7%E5%93%81%E3%80%81%E4%BF%A1%E6%81%AF%E5%92%8C%E6%9C%8D%E5%8A%A1"><span class="toc-number">6.3.</span> <span class="toc-text">3. 输出结果为产品、信息和服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%B5%84%E6%BA%90%E8%B5%84%E4%BA%A7%E8%83%BD%E5%8A%9B"><span class="toc-number">6.4.</span> <span class="toc-text">4. 资源资产能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B5%81%E7%A8%8B"><span class="toc-number">6.5.</span> <span class="toc-text">5. 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%90%88%E4%BD%9C%E4%BC%99%E4%BC%B4"><span class="toc-number">6.6.</span> <span class="toc-text">6. 合作伙伴</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%8E%B7%E5%88%A9%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.7.</span> <span class="toc-text">7. 获利模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%94%B6%E5%85%A5%E5%A2%9E%E9%95%BF%E6%96%B9%E5%BC%8F"><span class="toc-number">6.8.</span> <span class="toc-text">8. 收入增长方式</span></a></li></ol></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h2 id="电子商务模式"><a href="#电子商务模式" class="headerlink" title="电子商务模式"></a>电子商务模式</h2><p>电子商务模式是指企业运用互联网，通过基于一定技术基础的商务运作方式开展经营取得营业收入的基本方式。</p>
+<span id="more"></span>
+<p>主要可以分为以下四种类型：</p>
+<ul>
+<li>B2C（Business to Consumer），即企业与消费者之间的电子商务，如京东。</li>
+<li>B2B（Business to Business），即企业与企业之间的电子商务，如阿里巴巴</li>
+<li>C2C（Consumer to Consumer），即消费者与消费者之间的电子商务，如淘宝。</li>
+<li>O2O（Online To Offline），即线下商务与互联网之间的电子商务，如美乐乐，其O2O模式具体表现为线上家具网与线下体验馆的双平台运营。</li>
+</ul>
+<p>C2C商务平台就是通过为买卖双方提供一个在线交易平台，使卖方可以主动提供商品上网拍卖，而买方可以自行选择商品进行竞价。</p>
+<p>O2O模式下，线下服务就可以用线上来揽客，消费者可以用线上来筛选服务，还有成交可以在线结算，很快达到规模。该模式最重要的特点是：推广效果可查，每笔交易可跟踪</p>
+<h2 id="电商网站解决方案"><a href="#电商网站解决方案" class="headerlink" title="电商网站解决方案"></a>电商网站解决方案</h2><p>电商网站中 C 端用户操作路径大致如下：</p>
+<pre><code>商品浏览 -》 下单 -》支付 -》订单查看 -》退货
+</code></pre>
+<p>结合 B 端用户的操作，整套电商系统会涉及：</p>
+<h3 id="前台系统"><a href="#前台系统" class="headerlink" title="前台系统"></a>前台系统</h3><ul>
+<li>产品展示</li>
+<li>个人中心（支付，订单，购物车，积分系统）</li>
+<li>搜索，推荐</li>
+<li>用户反馈交流（客服系统，社区）</li>
+</ul>
+<h3 id="运营管理后台"><a href="#运营管理后台" class="headerlink" title="运营管理后台"></a>运营管理后台</h3><ul>
+<li>商品管理</li>
+<li>商户管理</li>
+<li>库存管理</li>
+<li>支付管理</li>
+<li>订单管理</li>
+<li>配送物理管理</li>
+<li>用户权限管理</li>
+<li>数据统计分析</li>
+<li>营销推广管理，如SEO，促销，广告</li>
+<li>前台内容管理系统</li>
+</ul>
+<h3 id="基础服务"><a href="#基础服务" class="headerlink" title="基础服务"></a>基础服务</h3><ul>
+<li>数据存储（日志，图片，商品信息）</li>
+<li>监控报警</li>
+<li>日志收集</li>
+<li>消息系统</li>
+<li>队列服务</li>
+</ul>
+<p>会员通过推荐，搜索，分类检索等功能，进行商品的浏览。通过浏览，会员将感兴趣的商品加入购物车，并进行支付处理。</p>
+<p>会员在个人中心可以查看相关订单的处理状态，如：是否支付成功，是否配送等信息。对于不满意的商品，可以进行退换货处理。</p>
+<p>在B 端的管理后台，有相关权限的管理员，可以进行商品管理，对订单进行处理。结合统计分析和营销推广，评出热销商品等等。</p>
+<h3 id="可供参考的系统架构示例"><a href="#可供参考的系统架构示例" class="headerlink" title="可供参考的系统架构示例"></a>可供参考的系统架构示例</h3><img src="/images/e-commerce/e_1.png" class="" title="电商平台基础技术架构">
+<img src="/images/e-commerce/e_2.png" class="" title="电商平台技术架构">
+
+<img src="/images/e-commerce/e_3.png" class="" title="电商平台系统图">
+
+
+<h2 id="技术架构非功能性指标"><a href="#技术架构非功能性指标" class="headerlink" title="技术架构非功能性指标"></a>技术架构非功能性指标</h2><h3 id="1-系统效率"><a href="#1-系统效率" class="headerlink" title="1. 系统效率"></a>1. 系统效率</h3><ul>
+<li>空间换时间（多级缓存，静态化，索引）</li>
+<li>并行与分布式计算（map-reduce，多线程，多进程）</li>
+</ul>
+<h3 id="2-可扩展性"><a href="#2-可扩展性" class="headerlink" title="2. 可扩展性"></a>2. 可扩展性</h3><ul>
+<li>系统无状态</li>
+<li>拆分（分库，分表（水平，垂直））</li>
+</ul>
+<h3 id="3-安全性"><a href="#3-安全性" class="headerlink" title="3. 安全性"></a>3. 安全性</h3><ul>
+<li>数据存储安全，如增量，全量备份，异机备份。</li>
+<li>数据传输安全，ssl&#x2F;tls，加解密（对称，非对称）。</li>
+<li>网络安全，数据库与外网隔离，确保不被恶意攻击</li>
+<li>安全审计、操作日志记录。</li>
+</ul>
+<h3 id="4-可用性"><a href="#4-可用性" class="headerlink" title="4. 可用性"></a>4. 可用性</h3><ul>
+<li>负载均衡（lvs，keepalived）</li>
+<li>多写分离，主从切换，failover</li>
+<li>应急预案和系统预警</li>
+<li>系统降级（功能和品质）</li>
+<li>系统限流（过载保护）</li>
+</ul>
+<h2 id="电商的特点"><a href="#电商的特点" class="headerlink" title="电商的特点"></a>电商的特点</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>人们不受时间的限制，不受空间的限制，不受传统购物的诸多限制，可以随时随地在网上交易。通过跨越时间、空间，使我们在特定的时间里能够接触到更多的客户，为我们提供了更广阔的发展环境。</p>
+<h3 id="市场"><a href="#市场" class="headerlink" title="市场"></a>市场</h3><p>在网上这个世界将会变得很小，一个商家可以面对全球的消费者，而一个消费者可以在全球的任何一家商家购物。一个商家可以去挑战不同地区、不同类别的买家客户群，在网上能够收集到丰富的买家信息，进行数据分析。</p>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><p>电子商务减少了商品流通的中间环节，节省了大量的开支，从而也大大降低了商品流通和交易的成本。通过电子商务，企业能够更快的匹配买家，实现真正的产-供-销一体化，能够节约资源，减少不必要的生产浪费。</p>
+<h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><p>服务质量参差不齐。配送、安装、产品退换货、维修等客服环节需要完善。</p>
+<h2 id="电商的本质"><a href="#电商的本质" class="headerlink" title="电商的本质"></a>电商的本质</h2><p>电商首先重在“商”，而不在“电”。</p>
+<p>这意味着电商还是企业经济学，电商还是要讲效益，讲利润，讲责任。但另一方面更重要，电商有自己的特点，它是信息化技术的重新架构，它成就的不仅仅是渠道，而是一种管理模式，甚至是一种战略规则，其未来基本形态或最高形态，不应是单纯的销售，而是点对点的服务，通过企业直接面对单个消费者，提供个性化的服务，从而开启企业发展的新时代。</p>
+<h3 id="首先，电商应重新确立消费者地位"><a href="#首先，电商应重新确立消费者地位" class="headerlink" title="首先，电商应重新确立消费者地位"></a>首先，电商应重新确立消费者地位</h3><p>消费者是品牌的上帝，但如何真正把这理念通过一定方法来实现，却一直没有找到更直接更完备的答案。信息化为这个问题带来了新曙光。通过电商窗口，消费者可进行自我颜色设计、款式设计以及搭配设计；在生产过程中，也可以进一步和消费者沟通；而这本身就是一个巨大的营销过程。消费者穿在身上的服装，绝不会再撞衫，它是独一的，代表着自己心境和思想的，是最受消费者欢迎的。</p>
+<h3 id="其次，电商应重新塑造产业生态"><a href="#其次，电商应重新塑造产业生态" class="headerlink" title="其次，电商应重新塑造产业生态"></a>其次，电商应重新塑造产业生态</h3><p>低价是不可持续的，企业必须有相对充足利润，并促进上下游乃至生态的良好发展。靠资本投资打价格战，一时可以，不可一世；靠截取供应商利润，一次可以，不可永续；一个电商靠价格战可以，但一个行业这样则不正常。笔者认为，通过企业点对点的服务，可以获得相对高的利润，这不仅可以加速电商本身的创新，更重要的是让上下游企业有良好的利润来源，一旦这样的生态链条生成，那么其竞争力则是巨大的、持续的、有良好的前景的。</p>
+<h3 id="再次，电商应重新构建经济理论和品牌法则"><a href="#再次，电商应重新构建经济理论和品牌法则" class="headerlink" title="再次，电商应重新构建经济理论和品牌法则"></a>再次，电商应重新构建经济理论和品牌法则</h3><p>现在流行的经济理论和品牌法则，大多诞生在传统经济时代或信息化萌芽之时，均是那个时代的产物，更大程度上适应那个时代发展条件。比如，如果采用大众化定制，消费者会更广泛，类别更复杂，消费心理也会发生巨大变化，如果还一味墨守原来的定位法则，想必一定就刻舟求剑了。所以要在新时代里，一定要探寻定位的新内涵，寻找适合信息化时代的新方法，适合自己的新方法，通过不断创新实践，为丰富和扩展企业理论和品牌法则做出新尝试。</p>
+<p>总之，电商本身就是一种创造，本质要求提升商业形态和价值，如果只是打价格战，那就是南辕北辙了。</p>
+<h2 id="相关业务战略架构"><a href="#相关业务战略架构" class="headerlink" title="相关业务战略架构"></a>相关业务战略架构</h2><h3 id="1-服务对象"><a href="#1-服务对象" class="headerlink" title="1. 服务对象"></a>1. 服务对象</h3><p>企业战略规划从选择客户开始。如1号店成立之初，服务对象是超市人群中的网络人群，所以去家乐福等的线下人群才是相关核心主攻人群，而非泛人群。</p>
+<h3 id="2-价值提供"><a href="#2-价值提供" class="headerlink" title="2. 价值提供"></a>2. 价值提供</h3><p>确定顾客定位后，就要解决为什么顾客要从你这里购买而非竞争对手处购买的价值定位。</p>
+<p>1号店成立之初，从多种价值里最后选择了3个顾客价值：</p>
+<ul>
+<li><p>优惠价格</p>
+</li>
+<li><p>良好用户体验</p>
+</li>
+<li><p>未满足的品类需求（提供食品饮料，母婴这些当时竞争对手都不涉及的产品线）</p>
+</li>
+</ul>
+<p>选择定位时，一定需要按照：</p>
+<ul>
+<li><p>竞争对手不足</p>
+</li>
+<li><p>能消费者需求</p>
+</li>
+<li><p>对相关领域比较擅长，有优势，自身能做好</p>
+</li>
+</ul>
+<p>将这三者结合，产生一个清晰的价值定位，就可以以小博大。1号店启动时候只用了非常有限的资金，但假设一开始就博大，业务、资金、时间都分散，就没有今天了。</p>
+<h3 id="3-输出结果为产品、信息和服务"><a href="#3-输出结果为产品、信息和服务" class="headerlink" title="3. 输出结果为产品、信息和服务"></a>3. 输出结果为产品、信息和服务</h3><p>产品线定位确定之后，就要进行了收缩。</p>
+<p>1号店业务初期先保留了食品饮料、母婴、美容和家居四类，剔除了图书、服装等产品线，聘用了大量的兼职大学生协助产品经 理完善商品在网上的表现力，同时于刚董事长异常重视用户体验反馈，每天通过公司系统中消费者反馈第一时间解决来自各个部门的问题，这也是1号店能快速成长的一个重要原因，因为有效的企业更多是通过和终端顾客对话来解决企业内部的部门问题，而非公司高管自己拍脑袋决策。</p>
+<h3 id="4-资源资产能力"><a href="#4-资源资产能力" class="headerlink" title="4. 资源资产能力"></a>4. 资源资产能力</h3><p>表现为知识和权利领域。</p>
+<p>1号店通过人力经理的辛苦搜索，找到了各部门的领导者，所以成立初期，很快网络了一批各行业的人才来推动业务发展。组织资本上，申请大量的技术专利，对1号店品牌商标保护等。关系资本上，1号店迅速和行业合作伙伴建立战略合作关系，虽然当时业务很小，但创始人用公司的美好发展愿景和优秀团队两个武器和各个合作伙伴建立了战略合作关系，比如从上海的物流合作商特能处取得了行业最低的每单配送价格。</p>
+<h3 id="5-流程"><a href="#5-流程" class="headerlink" title="5. 流程"></a>5. 流程</h3><p>就是解决系统层面做什么。</p>
+<p>1号店当时IT人员数量是各部门之最，开发了很多系统，管理上也是制度系统比人重要，各部门周二的KPI会议上负责人都用部门量化的KPI业绩来沟通业务的机会和挑战以及改进方案。这几年来，虽然1号店人员流失率颇高，但业务还是持续增长，这也是创始人对系统的重视是一个重要原因。</p>
+<h3 id="6-合作伙伴"><a href="#6-合作伙伴" class="headerlink" title="6. 合作伙伴"></a>6. 合作伙伴</h3><p>合作伙伴分为纵向和横向合作伙伴。</p>
+<p>为业务直接带来业绩的为上下游的合作伙伴，上游供应商有宝洁等货品供应商，下游有平安客流伙伴，特能是物流伙伴，普洛斯园区则提供良好的仓储伙伴。</p>
+<p>目前沃尔玛入股1号店，应该可以从很多方面提供1号店的运营能力。而横向合作伙伴，定义为可以帮助公司间接提高产品服务价值和维系良好客户关系的供应商，比如听说1号店2012年起聘专业的客户关系维系公司来帮助提升客户关系管理等措施就是良好运用横向伙伴技巧。不和风投随意洽谈，从一开始就找能给自己真正带来业务提升的战略投资者。</p>
+<h3 id="7-获利模式"><a href="#7-获利模式" class="headerlink" title="7. 获利模式"></a>7. 获利模式</h3><p>目前电商越大越亏损，因为还在圈地时期。一个不注重盈利也解释不清楚未来盈利模式都是违背商业本质。而真正好的利润是持续长久的，不是圈钱短视，否则必有后患，好的利润模式也不是眼球经济，而应可持续发展。</p>
+<h3 id="8-收入增长方式"><a href="#8-收入增长方式" class="headerlink" title="8. 收入增长方式"></a>8. 收入增长方式</h3><p>收入增长模式可以分为客户轴，产品轴和位置轴。</p>
+<p>客户轴可以供应给个人消费者的有形产品外，1号店还提供了手机充值等无形服务产品来增加客户粘性，当然成立之初就实施的针对企业的团购也给1号店带来了一 定比例的收入。</p>
+<p>产品轴是随着公司发展逐渐增加，各平台电商公司虽然都是从不同产品线起家，但最后基本会殊途同归，品类扩充是必由之路，但必须有节奏感和清晰的定位分析，否则会出现凡客去年的产品扩充问题。</p>
+<p>最后是位置轴，全国布局一定是逐步实现，是规模做大的桥头堡，但需要资本背后支持。</p>
+<p>reference：</p>
+<p>[^1] <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA4ODI4NjMwMQ==&mid=10000072&idx=2&sn=89dbb533dd9bfd0f0900fc2ad2504e6c&3rd=MzA3MDU4NTYzMw==&scene=6#rd">电子商务不得不了解的模式</a></p>
+<p>[^2] <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MzY2NTEyMw==&appmsgid=10013152&itemidx=1&sign=6fa1962f942a1804368e3e22c393c934&3rd=MzA3MDU4NTYzMw==&scene=6#wechat_redirect">电商的本质</a></p>
+<p>[^3] <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA4MTcxNzgzMQ==&mid=200319772&idx=5&sn=d8e44444b80d633dbc56f5ee6ab5de5a&3rd=MzA3MDU4NTYzMw==&scene=6#rd">以1号店为例，解析企业电子商务8步业务战略架构</a></p>
+<p>[^4] <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MjM5MjEwMTk1OQ==&mid=200031802&idx=1&sn=fec76ef0b002c7d41c91d746a07ee0c9&3rd=MzA3MDU4NTYzMw==&scene=6#rd">电子商务模式下如何进行客户关系管理</a></p>
+<p>[^5] <a target="_blank" rel="noopener" href="http://blog.csdn.net/yangbutao/article/details/12242441">构建高并发高可用的电商平台架构实践</a></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2014/09/22/2014-09-22-e-commerce-idea-collection/">https://blog.gaoyuan.xyz/2014/09/22/2014-09-22-e-commerce-idea-collection/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Architecture/">Architecture</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2014/10/01/2014-10-01-use-graphite-and-alter-build-monitor-system/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">使用graphite和cabot搭建监控服务</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2014/08/02/2014-08-02-synchronization-user-account-on-linux/">  
+        <span class="next-text nav-default">在linux服务器之间同步用户账号</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

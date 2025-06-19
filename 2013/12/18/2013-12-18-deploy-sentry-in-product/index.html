@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="如何在线上生产环境部署sentry哨兵，对运行时错误进行收集，并通过邮件提醒等方式，及时帮助我们发现线上问题。改善服务质量" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="deploy sentry in product with event logging and aggregation php" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2013/12/18/2013-12-18-deploy-sentry-in-product/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>在生产环境部署sentry进行错误收集和提醒 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      在生产环境部署sentry进行错误收集和提醒
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2013-12-18
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/devops/">devops</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#python%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">python环境安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Sentry-server"><span class="toc-number">1.2.</span> <span class="toc-text">安装Sentry server</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">快速配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%9C%A8%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">配置在生产环境中使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Sentry-server"><span class="toc-number">3.1.</span> <span class="toc-text">Sentry server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sentry-client"><span class="toc-number">3.2.</span> <span class="toc-text">Sentry client</span></a></li></ol></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>Sentry正如其名，是一个实时的日志聚合平台，可以通过捕获程序事件（<code>Error</code>，<code>Exception</code>），或者主动上报的方式将错误信息等进行收集汇总和提醒，以帮助我们及时发现项目中的问题。</p>
+<span id="more"></span>
+<p>Sentry Server端是使用python语言开发的，目前有如下平台的客户端sdk：</p>
+<p><code>Python</code>，<code>PHP</code>，<code>Ruby</code>，<code>Javascript</code>，<code>Java</code>，<code>Nodejs</code>，<code>IOS</code></p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/getsentry/sentry">https://github.com/getsentry/sentry</a></p>
+<p>本文以收集<code>PHP</code>错误为例。</p>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><p>Sentry的文档清晰且完善，包括<code>安装</code>，<code>配置</code>，<code>调优</code>以及<code>客户端调用</code>，正式使用之前，建议看看，以加深理解。地址：<a target="_blank" rel="noopener" href="http://sentry.readthedocs.org/en/latest/">http://sentry.readthedocs.org/en/latest/</a></p>
+<h4 id="python环境安装"><a href="#python环境安装" class="headerlink" title="python环境安装"></a>python环境安装</h4><p>Sentry需要python2.5以上，本文以<code>python2.7.3</code>为例，使用<code>virtualenv</code>进行环境隔离，使用<code>pip</code>安装需要的包</p>
+<figure class="highlight bash"><figcaption><span>python2.7.3-install.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">yum install -y bzip2-devel.x86_64</span><br><span class="line">yum install -y sqlite-devel.x86_64</span><br><span class="line">yum install -y readline-devel.x86_64</span><br><span class="line">wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2</span><br><span class="line">tar jxvf Python-2.7.3.tar.bz2</span><br><span class="line"><span class="built_in">cd</span> Python-2.7.3</span><br><span class="line">./configure --prefix=/usr/local/python2.7.3</span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"></span><br><span class="line">wget https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz --no-check-certificate</span><br><span class="line">tar zxvf distribute-0.6.49.tar.gz</span><br><span class="line"><span class="built_in">cd</span> distribute-0.6.49</span><br><span class="line"><span class="built_in">sudo</span> /usr/local/python2.7.3/bin/python setup.py install</span><br><span class="line"><span class="built_in">sudo</span> /usr/local/python2.7.3/bin/easy_install virtualenv</span><br><span class="line"><span class="built_in">sudo</span> /usr/local/python2.7.3/bin/easy_install -i http://e.pypi.python.org/simple virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>至此，就完成了python2.7.3和pip，以及virtualenv的安装，使用如下命令进行测试</p>
+<pre><code>/usr/local/python2.7.3/bin/python
+</code></pre>
+<h4 id="安装Sentry-server"><a href="#安装Sentry-server" class="headerlink" title="安装Sentry server"></a>安装Sentry server</h4><p>初始化安装目录</p>
+<pre><code>mkdir -p /data/server/python-envs
+</code></pre>
+<p>添加相关环境变量</p>
+<pre><code>vim ~/.bashrc
+</code></pre>
+<p>添加：</p>
+<pre><code>export WORKON_HOME=/data/server/python-envs
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/python2.7.3/bin/python
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/python2.7.3/bin/virtualenv
+source /usr/local/python2.7.3/bin/virtualenvwrapper.sh
+</code></pre>
+<p>使环境变量生效</p>
+<pre><code>source ~/.bashrc
+</code></pre>
+<p>安装Sentry server</p>
+<pre><code>mkvirtualenv sentry
+pip install sentry
+pip install sentry[mysql]
+pip install sentry[mysql] --upgrade
+</code></pre>
+<p>修改<code>~/.bashrc</code>，添加如下代码，以便登录后自动切换到相关python环境</p>
+<pre><code>source /data/server/python-envs/sentry/bin/activate
+</code></pre>
+<h3 id="快速配置"><a href="#快速配置" class="headerlink" title="快速配置"></a>快速配置</h3><p>或许你还没有做好决定，只是想尽快体验下Sentry，在完成上面的安装之后，通过下面三个步骤即可满足你的愿望：</p>
+<p>1 初始化配置</p>
+<pre><code>sentry init ~/sentry.conf.py
+</code></pre>
+<p>2 修改配置</p>
+<p>修改初始配置中的如下两项就行</p>
+<p><code>SENTRY_WEB_HOST</code>，<code>SENTRY_URL_PREFIX</code>，如：</p>
+<pre><code>SENTRY_URL_PREFIX = &#39;http://10.16.15.1:9000&#39;
+SENTRY_WEB_HOST = &#39;10.16.15.1&#39;
+</code></pre>
+<p>3 创建超级管理员帐号，启动server</p>
+<pre><code>sentry --config=~/sentry.conf.py upgrade
+sentry --config=~/sentry.conf.py createsuperuser
+sentry --config=~/sentry.conf.py start
+</code></pre>
+<p>然后就可以通过url <a href="http://server_host:port">http://server_host:port</a> ，使用创建的帐号登录系统后台，进行项目，帐号等管理，和已收集日志的查看等等</p>
+<h3 id="配置在生产环境中使用"><a href="#配置在生产环境中使用" class="headerlink" title="配置在生产环境中使用"></a>配置在生产环境中使用</h3><h4 id="Sentry-server"><a href="#Sentry-server" class="headerlink" title="Sentry server"></a>Sentry server</h4><p><em>我们在生产环境下的使用状况：</em></p>
+<ul>
+<li><p>使用<code>mysql</code>作为后端数据存储</p>
+</li>
+<li><p>使用<code>celery</code>任务队列（<code>broker</code>使用<code>redis</code>），处理数据入库，发送邮件提醒等工作</p>
+</li>
+<li><p>同时，使用<code>redis</code>作为<code>Update Buffers</code>，用于将频繁出现的相同事件合并，这在高并发时会相当有用</p>
+</li>
+<li><p>使用<code>memcache</code>作为前端<code>Cache</code>，管理后台通过轮询的访问获取是否有新的事件提醒，使用<code>memcache</code>，可以减轻直接查询数据库的压力</p>
+</li>
+<li><p>使用<code>Udp</code>协议发送并接收相关事件</p>
+</li>
+<li><p>使用<code>Nginx</code>反向代理前端http请求，并使用<code>HttpLimitReqModule</code>限制请求的发送速率</p>
+</li>
+<li><p>使用<code>supervisor</code>管理<code>celery</code>和<code>sentry</code>server</p>
+</li>
+</ul>
+<p><em>相关安装步骤：</em></p>
+<pre><code>pip install redis hiredis nydus
+pip install redis hiredis nydus --upgrade
+pip install python-memcached
+pip install gevent
+pip install eventlet
+pip install supervisor
+</code></pre>
+<p><em>初始化配置</em></p>
+<pre><code>mkdir -p /data/server/sentry/etc
+sentry init /data/server/sentry/etc/sentry.conf.py
+</code></pre>
+<p><em>创建超级管理员帐号</em></p>
+<pre><code>sentry --config=/data/server/sentry/etc/sentry.conf.py upgrade
+sentry --config=/data/server/sentry/etc/sentry.conf.py createsuperuser
+</code></pre>
+<p><em>初始化supervisor配置</em></p>
+<pre><code>echo_supervisord_conf &gt; /data/server/sentry/etc/supervisord.conf
+</code></pre>
+<p><em>配置Sentry</em></p>
+<p>示例配置请参见 <a target="_blank" rel="noopener" href="https://gist.github.com/jqlblue/8018185">https://gist.github.com/jqlblue/8018185</a></p>
+<p>修改<code>/data/server/sentry/etc/supervisord.conf</code>，添加：</p>
+<pre><code>[program:web]
+command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start
+process_name=%(program_name)s_%(process_num)02d
+numprocs=3
+numprocs_start=0
+startsecs=5
+startretries=3
+stopsignal=QUIT
+stopwaitsecs=10
+stopasgroup=true
+killasgroup=true
+environment=SENTRY_CONF=&quot;/data/server/sentry/etc/sentry.conf.py&quot;
+directory=/data/server/python-envs/sentry/
+
+[program:sentry_udp]
+command=/data/server/python-envs/sentry/bin/sentry --config=/data/server/sentry/etc/sentry.conf.py start udp
+process_name=sentry_udp_server
+numprocs=1
+numprocs_start=0
+startsecs=5
+startretries=3
+stopsignal=QUIT
+stopwaitsecs=10
+stopasgroup=true
+killasgroup=true
+environment=SENTRY_CONF=&quot;/data/server/sentry/etc/sentry.conf.py&quot;
+directory=/data/server/python-envs/sentry/
+
+[program:celeryd]
+command=/data/server/python-envs/sentry/bin/sentry celery worker -c 6 -P processes -l WARNING -n worker-%(process_num)02d.worker
+process_name=%(program_name)s_%(process_num)02d
+numprocs=1
+numprocs_start=0
+startsecs=1
+startretries=3
+stopsignal=TERM
+stopwaitsecs=10
+stopasgroup=false
+killasgroup=true
+environment=SENTRY_CONF=&quot;/data/server/sentry/etc/sentry.conf.py&quot;
+directory=/data/server/python-envs/sentry/
+</code></pre>
+<p><em>管理Sentry server</em></p>
+<ul>
+<li>启动superviord</li>
+</ul>
+<p>执行如下命令，同时，<code>celery</code>，<code>sentry web</code>，<code>sentry udp server</code>也将随之启动</p>
+<pre><code>supervisord -c /data/server/sentry/etc/supervisord.conf
+</code></pre>
+<ul>
+<li>停止sentry相关server</li>
+</ul>
+<p>执行如下命令</p>
+<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
+</code></pre>
+<ul>
+<li>停止superviord</li>
+</ul>
+<p>执行如下命令，同时，已启动的<code>centry</code>相关server也将停止</p>
+<pre><code>supervisorctl -c /data/server/sentry/etc/supervisord.conf stop all
+</code></pre>
+<p><code>supervisor</code>更多使用方法请参见 <a target="_blank" rel="noopener" href="http://supervisord.org/">http://supervisord.org/</a></p>
+<p><code>nginx</code>配置请参见 <a target="_blank" rel="noopener" href="https://gist.github.com/jqlblue/8019629">https://gist.github.com/jqlblue/8019629</a></p>
+<h4 id="Sentry-client"><a href="#Sentry-client" class="headerlink" title="Sentry client"></a>Sentry client</h4><p>可以通过在程序中<code>registerExceptionHandler</code>和<code>registerErrorHandler</code>将相关信息即时发送至server端。</p>
+<p>相关sdk项目地址 <a target="_blank" rel="noopener" href="https://github.com/getsentry/raven-php">https://github.com/getsentry/raven-php</a></p>
+<p>实例化<code>Raven_Client</code>时使用的<code>DSN</code>中的<code>public:secret</code>可以在使用管理员登录后台后，在<code>项目</code>-<code>设置</code>下面查看到。示例地址：<a target="_blank" rel="noopener" href="http://sentry_host/team_name/project_name/docs/php/">http://sentry_host/team_name/project_name/docs/php/</a></p>
+<p>我们采用通过增量读取php error log，使用crontab将错误信息上报。</p>
+<p>基于sentry php sdk修改之后的代码地址：<a target="_blank" rel="noopener" href="https://gist.github.com/jqlblue/8019312">https://gist.github.com/jqlblue/8019312</a></p>
+<p>安装依赖</p>
+<pre><code>yum install -y logcheck.noarch
+</code></pre>
+<p><code>logcheck</code>中的<code>logtail2</code>用于增量读取日志，<code>flock</code>用于防止定时任务堆积。</p>
+<blockquote>
+<p>另外，需要安装php的sockets扩展</p>
+</blockquote>
+<p>添加定时任务<br>    * * * * * &#x2F;usr&#x2F;bin&#x2F;flock -xn &#x2F;tmp&#x2F;sentry_client.lock &#x2F;opt&#x2F;php-5.5.4&#x2F;bin&#x2F;php &#x2F;path&#x2F;client.php –project&#x3D;project_name 2&gt;&amp;1 &gt; &#x2F;dev&#x2F;null</p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2013/12/18/2013-12-18-deploy-sentry-in-product/">https://blog.gaoyuan.xyz/2013/12/18/2013-12-18-deploy-sentry-in-product/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/devops/">devops</a>
+      
+      <a href="/tags/sentry/">sentry</a>
+      
+      <a href="/tags/monitor/">monitor</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2014/01/08/2014-01-08-use-tcpcopy-test-online/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">使用tcpcopy导入线上流量进行功能和压力测试</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2013/11/22/2013-11-22-android-app-profile-tools/">  
+        <span class="next-text nav-default">初探android应用性能分析</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

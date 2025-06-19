@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="如何在多台linux服务器之间同步用户账号，linux操作系统用户登录过程解析" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="linux操作系统 用户登录验证 用户账号同步 /etc/passwd /etc/group /etc/shadow" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2014/08/02/2014-08-02-synchronization-user-account-on-linux/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>在linux服务器之间同步用户账号 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      在linux服务器之间同步用户账号
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2014-08-02
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/linux/">linux</a>
+        
+        <a href="/categories/linux/devops/">devops</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">同步步骤</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>最近负责运帷的同事离职了，原先由运帷可以一手搞定的事情，分摊到了几个研发同事的身上。但是多人公用一个账号，实在感觉不爽。</p>
+<span id="more"></span>
+<p>由于公司没有几台服务器上，所以可以逐一登录服务器创建新账号。但是对于一个码农而言，这不科学，它违背了<code>DRY</code>原则。</p>
+<p>当然，也可以配置一个ldap服务器，修改linux用户登录使用ldap验证。但这让我有一种从火窟跳到冰窖的感觉。先不说是否能搞定配置的事情，引入的这个ldap，又会变成另外一个坑。</p>
+<p>昨天听一个同事时，我们来上班，要对得起自己的良心。所以我不能让上班时间在纠结中度过，用土方法解决问题先。</p>
+<h2 id="同步步骤"><a href="#同步步骤" class="headerlink" title="同步步骤"></a>同步步骤</h2><p>因为目前有一台服务器是登录的跳板机，所以只需要在跳板机上创建好新账号，然后把用户账号同步到其他机器上就好。</p>
+<blockquote>
+<p>如果没有跳板机，也可以随便选一台服务器（A），在A服务器上创建账号，并同步到其他机器上。</p>
+</blockquote>
+<ul>
+<li><p>在跳板机上创建用户账号</p>
+</li>
+<li><p>在要同步的服务器上创建账号，并将该用户在跳板机上如下文件中对于的条目追加到要同步到机器上</p>
+</li>
+</ul>
+<p><code>/etc/passwd</code>， <code>/etc/group</code>, <code>/etc/shadow</code></p>
+<p>以跳板机ip：<code>192.168.1.1</code>，要同步的服务器：<code>192.168.1.8</code>，新增用户名：<code>jqlblue</code>为例，登录跳板机执行：</p>
+<pre><code>$ useradd jqlblue
+$ ssh -l root -p 22 192.168.1.8 &quot;useradd jqlblue&quot;
+$ grep jqlblue: /etc/group | xargs -I &#123;&#125; ssh -l root -p 22 192.168.1.8 &quot;echo &#123;&#125; &gt;&gt; /etc/group&quot;
+$ grep jqlblue: /etc/passwd | xargs -I &#123;&#125; ssh -l root -p 22 192.168.1.8 &quot;echo &#123;&#125; &gt;&gt; /etc/passwd&quot;
+$ grep jqlblue: /etc/shadow | xargs -I &#123;&#125; ssh -l root -p 22 192.168.1.8 &quot;echo &#123;&#125; &gt;&gt; /etc/shadow&quot;
+</code></pre>
+<p>上述操作，编写成脚本即可。当需要新增或者修改用户时，只需在跳板机上进行操作，同步问题，由脚本来完成。</p>
+<p><em>上述脚本要在生产环境使用，需要注意如下问题：</em><br>    1 新增用户时，uid或者gid重复的问题<br>    2 修改用户密码或者组信息后，产生多条记录的问题</p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2014/08/02/2014-08-02-synchronization-user-account-on-linux/">https://blog.gaoyuan.xyz/2014/08/02/2014-08-02-synchronization-user-account-on-linux/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/linux/">linux</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2014/09/22/2014-09-22-e-commerce-idea-collection/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">电商相关概念整理</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2014/06/08/2014-06-08-manual-update-android-ota-update/">  
+        <span class="next-text nav-default">手动刷入android 4.4.3 OTA 更新包</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>
