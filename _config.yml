@@ -3,8 +3,8 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Debug Hacks
-subtitle: '谦虚其心，宏大其量.'
+title: Soulink
+subtitle: 'Code the Self, Connect the Soul.'
 description: ''
 keywords:
 author: GaoYuan 
@@ -13,7 +13,7 @@ timezone: 'Asia/Chongqing'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://jqlblue.github.io
+url: https://blog.gaoyuan.xyz
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:

@@ -11,15 +11,17 @@ A believer of “Think Big and Different, Start Small and Validated”
 
 A problem solver, A developer, and A team builder
 
-Aim to make live easier
+Aim to make life easier
+
+From code and AI to metaphysics and mindfulness, Soulink is my place to connect it all.
+
+Soulink stands for Soul + Link — a space where logic meets intuition, and where creation reflects the self.
 
 
 ### Contact me ###
 Email: gaoyuan.blue@gmail.com
 
 Weibo(Sina): [jqlblue](http://weibo.com/jqlblue)
-
-Google Plus: gaoyuan.blue@gmail.com
 
 Github: [jqlblue](https://github.com/jqlblue)
 
