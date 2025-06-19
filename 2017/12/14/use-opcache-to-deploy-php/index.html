@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="如何基于php的Opcache发布php代码" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="deploy php project use opcache，代码发布，Persistent secondary file-based cache for OPCache" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2017/12/14/use-opcache-to-deploy-php/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>基于Opcache发布php项目 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      基于Opcache发布php项目
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2017-12-14
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/php/">php</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Opcache"><span class="toc-number">1.</span> <span class="toc-text">Opcache</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Opcache%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">Opcache使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Opcache%E5%8F%91%E5%B8%83php"><span class="toc-number">3.</span> <span class="toc-text">使用Opcache发布php</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>php的<code>Opcache</code>已经release好多年了，现在基本都是php的标配。最近看到了php创始人<code>Rasmus Lerdorf</code>的一篇<a target="_blank" rel="noopener" href="http://talks.php.net/confoo16#/">talk</a>，于是有了使用php的opcache发布代码的想法。</p>
+<span id="more"></span>
+
+<h1 id="Opcache"><a href="#Opcache" class="headerlink" title="Opcache"></a>Opcache</h1><p><code>Opcache</code>也叫<code>Zend OPcache</code>，其前身是Zend公司开发的闭源PHP优化加速组件<code>Optimizer+</code>。于2013年3月中旬改名为<code>Opcache</code>，并开源。</p>
+<p>在2013年6月发布的php5.5.0版本中，整合了<code>Opcache</code>。</p>
+<p><a target="_blank" rel="noopener" href="https://pecl.php.net/package/ZendOpcache">pecl</a>上的<code>Opcache</code>扩展，于2015-01-12转正。</p>
+<p><code>OPcache</code>通过将 PHP 脚本预编译的字节码存储到共享内存(或者文件)中来提升 PHP 的性能， 存储预编译字节码的好处就是 省去了每次加载和解析 PHP 脚本的开销。不过<code>OPcache</code> 没有象 APC 那样的 user cache 功能。</p>
+<img src="/images/opcache/php_lifecycle_opcache.png" class="" title="PHP script lifecycle">
+
+
+<h1 id="Opcache使用"><a href="#Opcache使用" class="headerlink" title="Opcache使用"></a>Opcache使用</h1><p>php5.5及以上版本已经整合了<code>Opcache</code>，只需要在编译php时添加</p>
+<pre><code>--enable-opcache --enable-opcache-file
+</code></pre>
+<p>即可为php添加opcache扩展，然后修改<code>php.ini</code>，主动开启<code>Opcache</code></p>
+<pre><code>zend_extension=&quot;/path/opcache.so&quot;
+[opcache]
+opcache.enable=1
+opcache.enable_cli=1
+</code></pre>
+<p>之后运行php程序时，会生成<code>Opcache</code>，下次运行时可以直接加载，免去了词法分析，语法分析，以及解析php脚本花费的时间。</p>
+<p><code>Opcache</code>默认存储在php进程的共享内存中，不过也可以存储到本地文件中。性能的差异大致如下：</p>
+<img src="/images/opcache/secondary_file-based_cache.png" class="" title="Persistent secondary file-based cache for OPCache">
+
+<p>看完这张图，突然有种脑洞大开的感觉。</p>
+<p>发布php时，预先生成opcache-file，只发布opcache，是否可行呢？</p>
+<h1 id="使用Opcache发布php"><a href="#使用Opcache发布php" class="headerlink" title="使用Opcache发布php"></a>使用Opcache发布php</h1><p>开启<code>Opcache</code>后，可以使用<code>opcache_compile_file</code>生成php的opcache-file。涉及<code>php.ini</code>中的如下配置参数</p>
+<pre><code>opcache.max_accelerated_files=20000
+opcache.file_cache=/data/php/opcache
+opcache.file_cache_only=0
+opcache.validate_timestamps=0
+opcache.save_comments=0
+</code></pre>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">opcache_compile_files</span>(<span class="params"><span class="variable">$dir</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">foreach</span>(<span class="keyword">new</span> <span class="built_in">RecursiveIteratorIterator</span>(<span class="keyword">new</span> <span class="built_in">RecursiveDirectoryIterator</span>(<span class="variable">$dir</span>)) <span class="keyword">as</span> <span class="variable">$v</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$v</span>-&gt;<span class="title function_ invoke__">isDir</span>() &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;%\.php$%&#x27;</span>, <span class="variable">$v</span>-&gt;<span class="title function_ invoke__">getRealPath</span>())) &#123;</span><br><span class="line">            <span class="variable">$file</span> = <span class="variable">$v</span>-&gt;<span class="title function_ invoke__">getRealPath</span>();</span><br><span class="line">            <span class="title function_ invoke__">opcache_compile_file</span>(<span class="variable">$file</span>);</span><br><span class="line">            <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$file</span> . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">opcache_compile_files</span>(<span class="string">&#x27;/path/project/foo&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在命令行下执行上述脚本，即可遍历整个项目，生成对应php的opcache-file，同时会清空原php文件的内容。</p>
+<p>如：</p>
+<pre><code>ls /data/php/opcache/4d400aec8fadf667fabe41a87f30f7cc
+
+/data/php/opcache/4d400aec8fadf667fabe41a87f30f7cc/path/project/app/Utility.php.bin
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 生成opcache-file时，需要设置opcache.file_cache_only=0</span><br><span class="line">2. 需要保持原有项目的目录结构和文件 -- 内容可以清空，使opcache-file生效</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2017/12/14/use-opcache-to-deploy-php/">https://blog.gaoyuan.xyz/2017/12/14/use-opcache-to-deploy-php/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/devops/">devops</a>
+      
+      <a href="/tags/php/">php</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2020/02/28/guide-of-start-using-flutter/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">flutter入坑指南</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2017/01/05/2fa-a-programmers-perspective/">  
+        <span class="next-text nav-default">深入理解双因子认证</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

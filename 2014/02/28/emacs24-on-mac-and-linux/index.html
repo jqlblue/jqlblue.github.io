@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="如何在mac系统上使用emacs 24 配置php，python的web开发环境" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="emacs24.3, mac, web, develop environment" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2014/02/28/emacs24-on-mac-and-linux/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>在mac系统上使用emacs24打造web开发环境 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      在mac系统上使用emacs24打造web开发环境
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2014-02-28
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/emacs/">emacs</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Emacs24-3"><span class="toc-number">1.</span> <span class="toc-text">安装Emacs24.3</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Homebrew"><span class="toc-number">1.0.1.</span> <span class="toc-text">安装Homebrew</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E6%BA%90%E4%BB%A3%E7%A0%81%E5%AE%89%E8%A3%85Emacs"><span class="toc-number">1.0.2.</span> <span class="toc-text">通过编译源代码安装Emacs</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87Homebrew%E5%AE%89%E8%A3%85Emacs"><span class="toc-number">1.0.3.</span> <span class="toc-text">通过Homebrew安装Emacs</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">补充说明</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>Emacs 是一个强大的、可扩展的文本编辑器。不同于vim，它是一个流行的无模式文本编辑器。尤其是当emacs24内置包管理elpa后，使用通过<code>prelude</code>，<code>goblin</code>等，轻松使用emacs打造一个顺手的diy的web开发环境。</p>
+<span id="more"></span>
+
+<h3 id="安装Emacs24-3"><a href="#安装Emacs24-3" class="headerlink" title="安装Emacs24.3"></a>安装Emacs24.3</h3><h5 id="安装Homebrew"><a href="#安装Homebrew" class="headerlink" title="安装Homebrew"></a>安装Homebrew</h5><p><code>Homebrew</code>是mac系统上的包管理软件，是用<code>Ruby</code>语言编写的。我们可以使用它在终端安装系统没有自带的<code>Unix</code>相关工具。</p>
+<p><em>安装步骤</em></p>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
+cd /usr/local/Library &amp;&amp; git stash &amp;&amp; git clean -d -f
+</code></pre>
+<h5 id="通过编译源代码安装Emacs"><a href="#通过编译源代码安装Emacs" class="headerlink" title="通过编译源代码安装Emacs"></a>通过编译源代码安装Emacs</h5><p>在安装<code>Homebrew</code>时，会同时安装<code>gcc</code>和<code>autoconf</code>，所以我们可以直接下载源代码进行编译安装。通过如下地址可以下载到最新的emacs安装文件。<br>    <a target="_blank" rel="noopener" href="http://www.gnu.org/software/emacs/">http://www.gnu.org/software/emacs/</a></p>
+<p>如果没有<code>wget</code>等工具，可以通过<code>brew</code>进行安装，如：<br>    brew install wget</p>
+<p><em>安装步骤</em><br>    cd &#x2F;somepath&#x2F;<br>    wget <a target="_blank" rel="noopener" href="http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz">http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz</a><br>    tar zxvf emacs-24.3.tar.gz<br>    cd emacs-24.3<br>    .&#x2F;autogen.sh<br>    .&#x2F;configure –with-ns<br>    make install<br>    sudo ln -s &#x2F;somepath&#x2F;emacs-24.3&#x2F;nextstep&#x2F;Emacs.app &#x2F;Applications&#x2F;Emacs24.3.app</p>
+<h5 id="通过Homebrew安装Emacs"><a href="#通过Homebrew安装Emacs" class="headerlink" title="通过Homebrew安装Emacs"></a>通过Homebrew安装Emacs</h5><p><code>Homebrew</code>本身也是下载源代码进行编译安装，但是它可以帮我们简化这一过程。这就是技术的魅力 – make live easier。</p>
+<p><em>安装步骤</em><br>    brew install emacs –cocoa<br>    brew linkapps</p>
+<p>顺利的话，最新版的emacs就安装在mac了。如果中途遇到问题，按照提示解决下就好。</p>
+<p>有可能下载地址被墙，这时通过通过修改源代码的下载地址解决，方法如下：</p>
+<pre><code>1. brew edit softname，如 brew edit emacs
+2. 修改其中的url，保存退出
+</code></pre>
+<p>如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">&#x27;formula&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Emacs</span> &lt; <span class="title class_ inherited__">Formula</span></span><br><span class="line">    homepage <span class="string">&#x27;http://www.gnu.org/software/emacs/&#x27;</span></span><br><span class="line">    <span class="comment">#url &#x27;http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz&#x27;</span></span><br><span class="line">    url <span class="string">&#x27;http://mirror.bjtu.edu.cn/gnu/emacs/emacs-24.3.tar.gz&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后可以在<code>应用程序</code>，或者<code>Launchpad</code>中启动emacs，它默认长这样：</p>
+<img src="/images/emacs/startup.png" class="" title="emacs start up %}
+
+&lt;h3 id&#x3D;&quot;配置Emacs&quot;&gt;&lt;a href&#x3D;&quot;#配置Emacs&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;配置Emacs&quot;&gt;&lt;&#x2F;a&gt;配置Emacs&lt;&#x2F;h3&gt;&lt;p&gt;由于emacs24已经自带了包管理系统。只需几个简单的步骤，即可通过&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;bbatsov&#x2F;prelude&quot;&gt;Emacs Prelude&lt;&#x2F;a&gt;或者&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;jqlblue&#x2F;goblin-emacs&quot;&gt;Goblin Emacs&lt;&#x2F;a&gt;体验emacs的魅力。步骤如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;cd &#x2F;somepath&#x2F;
+git clone https:&#x2F;&#x2F;github.com&#x2F;jqlblue&#x2F;goblin-emacs
+ln -s &#x2F;somepath&#x2F;goblin-emacs ~&#x2F;.emacs.d
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;启动emacs后，会自动下载需要的扩展，完成后即可体验。&lt;&#x2F;p&gt;
+{% img &#x2F;images&#x2F;emacs&#x2F;goblin-startup.png goblin emacs start up">
+
+<p>完成<code>jedi</code>，python自动完成的配置<br>    cd ~&#x2F;.emacs.d&#x2F;elpa&#x2F;jedi*<br>    sudo pip install -r requirements.txt</p>
+<p>或者指定pypi源<br>    sudo pip install -i <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple">http://pypi.douban.com/simple</a> -r requirements.txt</p>
+<h3 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h3><ul>
+<li>Goblin-emacs简介</li>
+</ul>
+<p>goblin-emacs在prelude的基础上，对<code>PHP</code>，<code>Python</code>等<code>mode</code>进行了增强，并尽量保持原生的快捷键。相关功能介绍：</p>
+<pre><code>flymake语法检测
+php-mode
+php基于字典的自动完成
+python基于jedi的自动完成
+org-mode
+doxymacs 生成文档注释
+slime－mode
+版本控制工具的集成
+</code></pre>
+<p>当使用emacs编辑<code>ruby</code>或者<code>lua</code>源码时，会自动下载并安装相关<code>mode</code>，相关映射在<code>core/goblin-packages.el</code>中进行配置。</p>
+<ul>
+<li>交换<code>Control</code>键和<code>Caps-Lock</code>键</li>
+</ul>
+<p>因为emacs上的很多快捷键默认都是以<code>Control</code>开始。操作久了小拇指会比较难受，将<code>Control</code>和<code>Caps-Lock</code>进行交换，可以解放要经常蜷缩的小拇指。</p>
+<img src="/images/emacs/swap-control-capslock.png" class="">
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2014/02/28/emacs24-on-mac-and-linux/">https://blog.gaoyuan.xyz/2014/02/28/emacs24-on-mac-and-linux/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/linux/">linux</a>
+      
+      <a href="/tags/mac/">mac</a>
+      
+      <a href="/tags/emacs/">emacs</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2014/03/29/read-wirite-on-linux-file-system/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">linux文件系统如何进行文件存取</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2014/01/08/use-tcpcopy-test-online/">  
+        <span class="next-text nav-default">使用tcpcopy导入线上流量进行功能和压力测试</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

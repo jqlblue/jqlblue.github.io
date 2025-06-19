@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="an simple introduction to systemtap" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="systemtap introduction" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2013/08/18/an-introduction-to-systemtap/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>an introduction to systemtap - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      an introduction to systemtap
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2013-08-18
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/devops/">devops</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">相关背景知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96trace%E5%B7%A5%E5%85%B7%E6%AF%94%E8%BE%83"><span class="toc-number">2.</span> <span class="toc-text">与其他trace工具比较</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>就像它的名字system（系统）tap（窃听），systemtap提供了底层的支持，以简化系统在运行时的信息收集（包括用户态和内核态的信息）。通过对收集到的信息进行分析，可以帮忙我们识别潜在的性能原因和功能问题。</p>
+<span id="more"></span>
+
+<pre><code>SystemTap is a tool for the Linux Operating System
+that allows developers and system administrators to deeply investigate
+the behavior of the kernel and even user space applications
+in order to discover error conditions, performance issues,
+or just to understand how the system works, similarly to DTrace.
+
+systemtap不会直接告诉你程序哪里出了问题。但是在你对代码熟悉的情况下，可以用一成的功力使出七八成的效果
+</code></pre>
+<p>以往在收集这些信息时，我们需要添加检测点，重新编译，安装，重启使之生效。<br>挺没意思的。。。</p>
+<p>使用systemtap就不需要了，我们只要编写相关脚本，并让systemtap的命令<br>行接口stap（systemtap script translator&#x2F;driver）进行调用就可以收集到用<br>户空间和内核空间的相关信息。</p>
+<p>通过编写SystemTap脚本，我们就可以很容易地收集甚至篡改系统数据，这是普<br>通的linux系统工具所做不到的。</p>
+<h3 id="相关背景知识"><a href="#相关背景知识" class="headerlink" title="相关背景知识"></a>相关背景知识</h3><p>在Solaris系统上，有一个大名鼎鼎的动态跟踪工具<br><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/DTrace">Dtrace</a>，这一个相当棒的工具（从<br>2001年10月开始开发，在2005年1月首次发布），曾<br>荣获《华尔街杂志》<br><a target="_blank" rel="noopener" href="https://blogs.oracle.com/swan/date/20070307">2006技术创新大奖中的金奖</a><br>，和ZFS文件系统一样，DTrace一直都因版权问题而无法移植到Linux上，但<br>Oracle（SUN公司被Oracle收购）在2012年2月宣布发布DTrace for Linux beta<br>版，即将Solaris操作系统的动态跟踪工具移植到他们的Unbreakable<br>Enterprise Kernel(2.6.39)内，也就是说Linux人员终于也可以使用DTrace了。</p>
+<p>在2005年1月开始，开源社区为linux操作系统开发了基于GPL许可的systemtap。</p>
+<p>目前一般的Linux发行版，比如Fedora、OpenSuse、CentOS等，已经包含有systemtap的完整支持了。</p>
+<h3 id="与其他trace工具比较"><a href="#与其他trace工具比较" class="headerlink" title="与其他trace工具比较"></a>与其他trace工具比较</h3><ul>
+<li>Dtrace：<br>dtrace不用多说了，systemtap的开发，就是用来替代dtrace的，但是他们还<br>是有以下几个明确的差异：<ol>
+<li>Dtrace不允许你任意地注入c代码，即在运行时修改系统数据，通过-g选项</li>
+<li>Dtrace脚本是以虚拟机字节码的形式在内核中进行解释，而systemtap脚本<br>则是以本地二进制代码的形式被进行加载</li>
+</ol>
+</li>
+<li>strace：<br>strace工作于用户态，只能用于处理系统调用</li>
+<li>ltrace：<br>ltrace工作于用户态，只能用于处理用户态的函数</li>
+<li>gdb：<br>gdb也工作于用户态，它的目标是进行交互式的调试</li>
+</ul>
+<p>更多信息请参见：<a target="_blank" rel="noopener" href="http://sourceware.org/systemtap/wiki/SystemtapDtraceComparison">SystemtapDtraceComparison</a></p>
+<p>而systemtap作为一个通用工具，通过追踪（tracing），可以了解：</p>
+<pre><code>在一段时间内，某进程执行了哪些系统调用以及次数
+一个函数执行了多长时间
+进程函数调用栈并使用相关工具生成火焰图 (Flame Graph)
+甚至可以使用systemtap脚本进行任意发挥
+</code></pre>
+<p>reference:<br><a target="_blank" rel="noopener" href="http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000">http://sourceware.org/systemtap/langref/SystemTap_overview.html#SECTION00021000000000000000</a><br><a target="_blank" rel="noopener" href="http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf">http://raisama.net/talks/fisl10/kernel-hacking/stap.pdf</a><br><a target="_blank" rel="noopener" href="http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf">http://cheeselee.fedorapeople.org/systemtap-robin-20130817.pdf</a><br><a target="_blank" rel="noopener" href="http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf">http://agentzh.org/misc/slides/yapc-na-2013-flame-graphs.pdf</a><br><a target="_blank" rel="noopener" href="http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf">http://www.linuxfoundation.jp/jp_uploads/seminar20090225/obata.pdf</a><br><a target="_blank" rel="noopener" href="http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/">http://dtrace.org/blogs/brendan/2011/10/15/using-systemtap/</a><br><a target="_blank" rel="noopener" href="http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/">http://lenky.info/2013/02/04/systemtap%E5%88%9D%E8%AF%95%E7%94%A8/</a></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2013/08/18/an-introduction-to-systemtap/">https://blog.gaoyuan.xyz/2013/08/18/an-introduction-to-systemtap/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/systemtap/">systemtap</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2013/10/26/fcitx-fedora/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">在fedora上安装fcitx输入法和云拼音</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2013/08/10/php-5-dot-5-upgrade-guide/">  
+        <span class="next-text nav-default">php 5.5 upgrade guide</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

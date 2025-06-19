@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="一周打造支付系统" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="php, Soulink" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2014/11/23/build-payment-system-in-one-week/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>一周打造支付系统 - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      一周打造支付系统
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2014-11-23
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/php/">php</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E7%BD%91%E8%B4%AD%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">一般网购流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">支付流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%94%AF%E4%BB%98%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.</span> <span class="toc-text">第三方支付平台</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E5%AE%9D%E6%8E%A5%E5%8F%A3"><span class="toc-number">4.</span> <span class="toc-text">支付宝接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6"><span class="toc-number">5.</span> <span class="toc-text">ssl证书</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E9%AA%8C%E7%AD%BE"><span class="toc-number">6.</span> <span class="toc-text">请求验签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A2%E5%8D%95"><span class="toc-number">7.</span> <span class="toc-text">订单</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%94%E8%B0%83%E9%83%A8%E7%BD%B2"><span class="toc-number">8.</span> <span class="toc-text">联调部署</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Hole"><span class="toc-number">9.</span> <span class="toc-text">The Hole</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>获取食物的最佳方式就是处于食物链的顶端，以捕食该链条之下的所有动植物。不言而喻，搭建处于资金流顶端的支付系统，伴随资金的转移过程，也是积累财富的绝佳手段。</p>
+<span id="more"></span>
+<h1 id="一般网购流程"><a href="#一般网购流程" class="headerlink" title="一般网购流程"></a>一般网购流程</h1><img src="/images/payment/shopping_flow.png" class="" title="shopping flow">
+
+<p>一般的网购流程如上图：</p>
+<ul>
+<li>商品筛选</li>
+<li>将选中的商品添加到购物车（顾名思义，推着车去购物。如果只卖一个商品的话，可以省略这步）</li>
+<li>确认要购买物品，去结算</li>
+<li>下订单，即提交要结算物品的清单</li>
+<li>网上支付该订单</li>
+</ul>
+<h1 id="支付流程"><a href="#支付流程" class="headerlink" title="支付流程"></a>支付流程</h1><img src="/images/payment/flow.jpg" class="" title="payment flow">
+
+<p>一个典型的支付流程如上图。</p>
+<p>用户下单时，订单系统需要和产品库交互，生成支付连接。支付系统对请求地址进行验签之后，调用第三方平台的支付接口进行支付，然后更新订单状态。在订单成功支付之后，更新产品库存信息。</p>
+<p>属于支付系统的功能有：</p>
+<ul>
+<li>请求参数验签</li>
+<li>第三方支付接口对接</li>
+<li>订单系统对接</li>
+</ul>
+<blockquote>
+<p>只要完成与第三方支付接口的对接，即可解决搭建支付系统中最难啃的一块硬骨头。</p>
+</blockquote>
+<h1 id="第三方支付平台"><a href="#第三方支付平台" class="headerlink" title="第三方支付平台"></a>第三方支付平台</h1><p>目前比较流行的第三方支付平台主要有：</p>
+<ul>
+<li>支付宝</li>
+<li>财付通</li>
+<li>快钱</li>
+<li>网银在线</li>
+<li>微信支付</li>
+</ul>
+<p>对于网银支付，可以调用银联的接口，或者直接对接银行（可以降低手续费，支持大额等个性化支付方法。但是实现成本较高）。</p>
+<p>虽然支付宝的手续费不是最实惠的，但是支付宝本身对接了个大银行的网银支付，而我们的目标是一周打造支付系统，当然选择最省事的。</p>
+<p>对接支付宝支付接口的流程如下：</p>
+<img src="/images/payment/zhifubao.jpg" class="" title="支付宝对接">
+
+<p>完成<code>技术集成</code>之前的工作，理论上需要8-10个工作日，所以需要提前申请。</p>
+<p>最好找商务部的同事出马，不要怕麻烦boss。有问题，及时向组织反馈。</p>
+<h1 id="支付宝接口"><a href="#支付宝接口" class="headerlink" title="支付宝接口"></a>支付宝接口</h1><p>与支付宝接口的交互流程如下</p>
+<img src="/images/payment/zhifubao_flow.jpg" class="" title="支付宝接口交互流程">
+
+<p>支付宝提供的sdk，主要包含如下文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alipay_core.function.php -- 支付宝接口公用函数，是请求、通知返回两个文件所调用的公用函数核心处理文件</span><br><span class="line">alipay_md5.function.php  -- MD5加密</span><br><span class="line">alipay_notify.class.php  -- 支付宝通知处理类，处理支付宝各接口通知返回</span><br><span class="line">alipay_submit.class.php  -- 支付宝各接口请求提交类，构造支付宝各接口表单HTML文本，获取远程HTTP数据</span><br></pre></td></tr></table></figure>
+
+<p><em>要调用的方法</em></p>
+<ul>
+<li>提交订单时，调用<code>alipay_submit.class.php</code>中的<code>buildRequestUrl</code>方法，同时，需要注册通知回调<code>return_url</code>和<code>notify_url</code>。</li>
+</ul>
+<p>其中：<br>    return_url是同步回调，一般用于在支付成功后，调转至支付成功页。<br>    notify_url是异步回调，一般用于更新订单状态等等（支付宝有相关队列服务运行异步回调，回调失败后，会以不定的间隔进行重试）。</p>
+<ul>
+<li>在通知回调时，都需要调用<code>alipay_notify.class.php</code>中的<code>verifyReturn</code>验证回调的合法性。</li>
+</ul>
+<h1 id="ssl证书"><a href="#ssl证书" class="headerlink" title="ssl证书"></a>ssl证书</h1><p>俗话说，没有买卖就没有杀戮。凡是涉及利益的地方，就不会很安全。使用采用http进行数据通讯，难免发生如下问题：</p>
+<img src="/images/payment/http_flow.jpg" class="" title="中间人攻击">
+
+<p>但是换成https，会有如下好处：</p>
+<img src="/images/payment/https_2.jpg" class="" title="http ssl">
+
+<img src="/images/payment/https_3.jpg" class="" title="https flow">
+
+<p>申请ssl证书，推荐数字公司使用的<a target="_blank" rel="noopener" href="http://www.wosign.com/price.htm">WoSign超真 SSL</a>。</p>
+<img src="/images/payment/ssl.jpg" class="" title="ssl">
+
+<h1 id="请求验签"><a href="#请求验签" class="headerlink" title="请求验签"></a>请求验签</h1><p>请求参数签名，需要使用可逆加密算法。其中又分为：</p>
+<ul>
+<li>对称加解密算法</li>
+<li>非对称加解密算法</li>
+</ul>
+<p>对称加解密算法，在加密和解密时都使用一个密钥，加解密性能较好。但安全性较低（密钥只要被拿到，就gameover）。</p>
+<p>非对称加解密算法，一般使用私钥加密，公钥解密。其安全性较好（只要保存好私钥就行），但是性能较差。</p>
+<p>所以可以使用对称加解密算法加密请求参数。但加解密时，不使用同一个密钥。相关密钥，通过非对称加解密算法加密后，在请求参数中传递。</p>
+<p>解密流程如下：<br>    1. 在请求参数中获取使用非对称加解密算法加密的密钥ekey<br>    2. 使用非对称加解密算法解密密钥ekey为dkey<br>    3. 使用对称加解密算法和dkey，解密请求参数</p>
+<h1 id="订单"><a href="#订单" class="headerlink" title="订单"></a>订单</h1><p>我们用一周打造的支付系统，不能是一个远在云端的架构，而要是一个可运行的系统。那么，订单自然也少不了。</p>
+<p>订单是按照如下对应关系产生的：</p>
+<pre><code>用户 -&gt; 商品 -&gt; 订单
+</code></pre>
+<p>在整个支付过程中，一般要存在两个订单号：</p>
+<ul>
+<li>用于在内部系统（订单，支付，个人中心）中流通的订单号 <code>order_no</code>，在每一次下单时产生。</li>
+<li>用于支付的订单号 <code>pay_order_no</code>，由 <code>order_no</code> ＋ 时间戳 ＋ salt等，在每一次支付时产生。</li>
+</ul>
+<h1 id="联调部署"><a href="#联调部署" class="headerlink" title="联调部署"></a>联调部署</h1><p>开发阶段涉及的模块可做如下划分：</p>
+<ul>
+<li>产品页</li>
+<li>支付页</li>
+<li>支付</li>
+<li>订单</li>
+<li>个人中心</li>
+<li>测试，部署上线</li>
+</ul>
+<p>衡量一个互联网的标准有：功能，交互，ui。</p>
+<p>因为我们的目标是一周内打造支付，那么，优先是完成支付和订单。至于是否要在产品页添加购物车，是否要在订单支付页面保存配送地址，是否要在个人中心对接物流，以及退款等等，都可以暂时砍掉。</p>
+<p>互联网产品，唯快不破。快速上线，快速迭代。</p>
+<h1 id="The-Hole"><a href="#The-Hole" class="headerlink" title="The Hole"></a>The Hole</h1><p>开发过程中，难免会遇到不少坑，特此纪录，希望帮助有缘人。</p>
+<ul>
+<li>产品金额存储</li>
+</ul>
+<p>为了避免因退款，对账时，和银行或者第三方支付平台产生因为数据精度而舍入等问题，可以将产品金额以<code>分</code>为单位存储，前台展示时除以100。</p>
+<ul>
+<li>需要两个订单号</li>
+</ul>
+<p>支付宝等第三方平台，对订单号有验证，一个订单号只能支付一次。所以系统中需要存在两个订单号，一个用于内部系统流通，一个用于支付，每次支付时都产品一个最新的（与内部系统流通的订单号有对应关系）。</p>
+<ul>
+<li>权限验证</li>
+</ul>
+<p>下单，或者支付完成后，在个人中心等位置，一般可以查看订单状态。此时需要注意，需要增加权限验证。否则会产生平行权限安全漏洞（可查看别人的订单等信息）</p>
+<ul>
+<li>系统安全性</li>
+</ul>
+<p>在支付和个人中心等页面，因为存在前后端交互。所以需要排查，是否存在sql注入或者xss等安全漏洞。推荐<code>XSScrapy</code>和<code>SqlMap</code>。</p>
+<ul>
+<li>日志</li>
+</ul>
+<p>在整个交易过程中，需要有完善详尽的日志记录。</p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2014/11/23/build-payment-system-in-one-week/">https://blog.gaoyuan.xyz/2014/11/23/build-payment-system-in-one-week/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/php/">php</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2015/01/25/categorize-web-information/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">互联网信息分类方法</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2014/10/01/use-graphite-and-alter-build-monitor-system/">  
+        <span class="next-text nav-default">使用graphite和cabot搭建监控服务</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

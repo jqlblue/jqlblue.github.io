@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="how to fix broken pipe error when run php in cli" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="php cli broken pipe" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2013/08/03/broken-pipe-in-php-cli/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>broken pipe in php cli - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      broken pipe in php cli
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2013-08-03
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/php/">php</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+
+  <div class="post-content">
+    
+    <p>下周打算把服务器上的php升级到5.5，综合老大的建议，计划按这个步骤进行：</p>
+<hr>
+<ul>
+<li>下线一台服务器，另起目录安装php5.5</li>
+</ul>
+<p>安装过程与php5.3差不多，要开启zend opcache的话，需要在<br>configure时–enable-opcache。在php.ini中配置时，需要以zend_extension的<br>形式加载。</p>
+<span id="more"></span>
+<ul>
+<li>从服务器访问日志中统计最近有请求的接口，按请求次数从大大小排序</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> access_log | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span> | awk -F <span class="string">&quot;?&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c | <span class="built_in">sort</span> -nr</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过已统计的接口列表（通过第二步产生），从访问日志中查询相关请求地<br> 址（包括相关参数）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">access_log | grep  <span class="string">&#x27;/api/test&#x27;</span> | <span class="built_in">head</span> -n 1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>绑定hosts，根据请求地址列表进行访问，观察web server和php的相关日志</li>
+</ul>
+<hr>
+<p>进行到第三步，就卡住了。：（</p>
+<p>“cat access_log | grep  ‘&#x2F;api&#x2F;test’ | head -n 1”这条命令在shell下执行<br>没有问题，但是如果用php的shell_exec运行，就会出现 “grep: writing<br>output: Broken pipe”。</p>
+<p>一顿google之后，遇到这篇文章Python中的SIGPIPE信号。对作者的示例代码做<br>了下加工后，发现一切正常了，修改后的python代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reset_sigpipe</span>():</span><br><span class="line">    signal.signal(signal.SIGPIPE, signal.SIG_DFL)</span><br><span class="line"></span><br><span class="line">output = subprocess.Popen(<span class="string">&quot;cat access_log | grep  &#x27;/api/test&#x27; | head -n 1&quot;</span>, shell=<span class="literal">True</span>, preexec_fn=reset_sigpipe, stdout=subprocess.PIPE)</span><br><span class="line"><span class="built_in">print</span> output.stdout.read()</span><br></pre></td></tr></table></figure>
+
+<p>但是我是要用php来做这件事，下面是php相关代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$source</span> = <span class="string">&#x27;./source_url.txt&#x27;</span>;</span><br><span class="line"><span class="variable">$dest</span> = <span class="string">&#x27;./dest_url.txt&#x27;</span>;</span><br><span class="line"><span class="variable">$res</span> = <span class="title function_ invoke__">file</span>(<span class="variable">$source</span>);</span><br><span class="line"><span class="title function_ invoke__">pcntl_signal</span>(SIGPIPE, SIG_DFL);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$dest</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$res</span> <span class="keyword">as</span> <span class="variable">$row</span>) &#123;</span><br><span class="line">    <span class="variable">$row</span> = <span class="title function_ invoke__">trim</span>(<span class="variable">$row</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$row</span>, <span class="string">&#x27;http://&#x27;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$command</span> = <span class="string">&quot;cat access_log | grep  &#x27;<span class="subst">&#123;$row&#125;</span>&#x27; | head -n 1 | awk &#x27;&#123;print \$6\&quot; \&quot;\$7&#125;&#x27; | awk -F &#x27;\&quot;&#x27; &#x27;&#123;print <span class="subst">$2</span>&#125;&#x27; | awk &#x27;&#123;print <span class="subst">$1</span>\&quot; http://test.api.com\&quot;<span class="subst">$2</span>&#125;&#x27;&quot;</span>;</span><br><span class="line">    <span class="variable">$check</span> = <span class="title function_ invoke__">system</span>(<span class="variable">$command</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$dest</span>, <span class="variable">$check</span> . PHP_EOL, FILE_APPEND);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和python中的signal.signal(signal.SIGPIPE, signal.SIG_DFL)一样，关键是<br>这句:<br>    pcntl_signal(SIGPIPE, SIG_DFL)<br>当php进程接收到SIGPIPE信号时，重置<br>为系统默认处理方式，即接收子进程的返回值。</p>
+<p><strong>问题解决了，但是原因呢？</strong></p>
+<p>我们再看看这行命令<br>    cat access_log | grep  ‘&#x2F;api&#x2F;test’ | head -n 1</p>
+<p>head命令在取得一行后立即退出（exit），此时pipe的读端就没了，但grep还会<br>继续往pipe写，此时pipe就会发送SIGPIPE信号，默认动作是终止程序。在shell<br>下执行时，grep收到SIGPIPE信号就退出了，所以运行没有问题。</p>
+<p>但在通过php的shell_exec或者system运行为何就有问题。应该是php忽略了<br>SIGPIPE信号，所以grep会继续向broke pipe（读端关闭）写入，于是就出现了<br>    grep: writing output: Broken pipe</p>
+<p>在天朝，有图也不一定是真相。所以应该是，也不一定是。废话少说，我们直接<br>上代码：<br>    $grep -r ‘SIGPIPE’ .&#x2F;<br>    .&#x2F;sapi&#x2F;cli&#x2F;php_cli.c:   signal(SIGPIPE, SIG_IGN); &#x2F;* ignore SIGPIPE in standalone mode so<br>所以php以cli的形式运行时，会忽略SIGPIPE信号。</p>
+<p>reference：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blogs.oracle.com/opal/entry/using_php_5_5_s">https://blogs.oracle.com/opal/entry/using_php_5_5_s</a></p>
+</blockquote>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2013/08/03/broken-pipe-in-php-cli/">https://blog.gaoyuan.xyz/2013/08/03/broken-pipe-in-php-cli/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/php5-5/">php5.5</a>
+      
+      <a href="/tags/pcntl/">pcntl</a>
+      
+      <a href="/tags/broken-pipe/">broken pipe</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2013/08/04/guide-of-packet-mobile-capture/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">移动应用无线抓包指南</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2013/08/03/check-php5-dot-5-compatibility/">  
+        <span class="next-text nav-default">check php 5.5 compatibility</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>
