@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.gaoyuan.xyz/2025/07/02/Dear-child-let-me-see-the-real-you/</loc>
+    
+    <lastmod>2025-07-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.gaoyuan.xyz/2025/06/19/Routers-and-Numerology-Learning-Journey/</loc>
     
     <lastmod>2025-06-19</lastmod>
@@ -310,7 +319,7 @@
 
   <url>
     <loc>https://blog.gaoyuan.xyz/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -318,252 +327,266 @@
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/php5-5/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/pcntl/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/broken-pipe/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/devops/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/codesniffer/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/systemtap/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/mobile/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/wireshark/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/mysql/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/android/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/profile/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/linux/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/sentry/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/monitor/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/tcpcopy/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/fs/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/php/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/mac/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/emacs/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/pattren/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/devops-linux/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/Architecture/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/web-%E4%BF%A1%E6%81%AF%E6%9E%B6%E6%9E%84-IA/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/collect-web-bass/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/ios/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/charles/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/https/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/collect/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/python/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/gfw/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/flutter/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/metaphysics/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/%E5%91%BD%E7%90%86/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/%E4%BA%BA%E7%94%9F%E9%80%89%E6%8B%A9/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/%E5%85%AB%E5%AD%97/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/tags/%E6%98%93%E5%AD%A6/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.gaoyuan.xyz/tags/%E4%BA%BA%E7%B1%BB%E5%9B%BE/</loc>
+    <lastmod>2025-07-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.gaoyuan.xyz/tags/human-design/</loc>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -572,63 +595,63 @@
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/php/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/devops/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/mobile/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/linux/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/mobile/network/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/emacs/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/linux/devops/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/collect/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/categories/metaphysics/</loc>
-    <lastmod>2025-06-29</lastmod>
+    <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
