@@ -102,7 +102,7 @@ theme: even
 
 sitemap:
   path: 
-    - sitemap.xml
+    - sitemap_google.xml
     - sitemap.txt
   template: ./sitemap_template.xml
   #template_txt: ./sitemap_template.txt
