@@ -23,32 +23,26 @@
   </url>
   
   <url>
-    <loc>https://blog.gaoyuan.xyz/about/index.html</loc>
+    <loc>https://blog.gaoyuan.xyz/about/index.html/</loc>
     
     <lastmod>2025-06-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.gaoyuan.xyz/tags/index.html</loc>
+    <loc>https://blog.gaoyuan.xyz/tags/index.html/</loc>
     
     <lastmod>2025-06-09</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.gaoyuan.xyz/categories/index.html</loc>
+    <loc>https://blog.gaoyuan.xyz/categories/index.html/</loc>
     
     <lastmod>2025-06-09</lastmod>
     
   </url>
   
-  <url>
-    <loc>https://blog.gaoyuan.xyz/2020/02/28/guide-of-start-using-flutter/</loc>
-    
-    <lastmod>2025-06-09</lastmod>
-    
-  </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/2017/01/05/2fa-a-programmers-perspective/</loc>
@@ -120,12 +114,6 @@
     
   </url>
   
-  <url>
-    <loc>https://blog.gaoyuan.xyz/2014/08/02/synchronization-user-account-on-linux/</loc>
-    
-    <lastmod>2025-06-09</lastmod>
-    
-  </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/2014/06/08/manual-update-android-ota-update/</loc>
@@ -169,12 +157,6 @@
     
   </url>
   
-  <url>
-    <loc>https://blog.gaoyuan.xyz/2014/01/08/use-tcpcopy-test-online/</loc>
-    
-    <lastmod>2025-06-09</lastmod>
-    
-  </url>
   
   <url>
     <loc>https://blog.gaoyuan.xyz/2014/02/28/emacs24-on-mac-and-linux/</loc>
