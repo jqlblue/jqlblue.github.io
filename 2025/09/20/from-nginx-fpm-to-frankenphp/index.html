@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="从nginx+fpm迁移到frankenphp" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="php, Caddy, nginx, fpm, frankenphp, Soulink" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="Soulink" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://blog.gaoyuan.xyz/2025/09/20/from-nginx-fpm-to-frankenphp/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CHJFB5W83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-7CHJFB5W83');
+</script>
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>从nginx+fpm迁移到frankenphp - Soulink</title>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Soulink</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">Soulink</a>  
+  
+     <br/><span id="subtitle">Code the Self, Connect the Soul.</span>
+  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      从nginx+fpm迁移到frankenphp
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2025-09-20
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/php/">php</a>
+        
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#FrankenPHP-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%BC%98%E5%8A%BF"><span class="toc-number">1.</span> <span class="toc-text">FrankenPHP 的核心功能与优势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%80%E4%BD%93%E5%8C%96%EF%BC%9A%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%90%9E%E5%AE%9A-Web-PHP"><span class="toc-number">1.1.</span> <span class="toc-text">1) 一体化：一个进程搞定 Web + PHP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Worker-%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%8A%8A%E6%A1%86%E6%9E%B6%E2%80%9C%E5%B8%B8%E9%A9%BB%E5%86%85%E5%AD%98%E2%80%9D%EF%BC%8C%E9%99%8D%E4%BD%8E%E6%AF%8F%E6%AC%A1%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">1.2.</span> <span class="toc-text">2) Worker 模式：把框架“常驻内存”，降低每次冷启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-103-Early-Hints%EF%BC%9A%E8%AE%A9%E9%A6%96%E5%B1%8F%E6%9B%B4%E5%BF%AB%E2%80%9C%E5%8A%A8%E8%B5%B7%E6%9D%A5%E2%80%9D"><span class="toc-number">1.3.</span> <span class="toc-text">3) 103 Early Hints：让首屏更快“动起来”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%86%85%E7%BD%AE-Mercure%EF%BC%9A%E9%9B%B6-SDK-%E7%9A%84%E5%AE%9E%E6%97%B6%E6%8E%A8%E9%80%81%EF%BC%88SSE%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">4) 内置 Mercure：零 SDK 的实时推送（SSE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%8D%95%E6%96%87%E4%BB%B6%E5%88%86%E5%8F%91%EF%BC%9A%E6%8A%8A%E2%80%9CPHP-Caddy-%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E2%80%9D%E6%89%93%E5%8C%85%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">5) 单文件分发：把“PHP + Caddy + 你的应用”打包成一个可执行文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%AE%80%E5%8C%96%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="toc-number">1.6.</span> <span class="toc-text">6) 简化的配置与扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%90%AF%E5%8A%A8-FrankenPHP"><span class="toc-number">2.</span> <span class="toc-text">安装与启动 FrankenPHP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%EF%BC%88%E6%9C%80%E5%BF%AB%E4%B8%8A%E6%89%8B%EF%BC%8C%E9%80%82%E5%90%88%E6%9C%AC%E5%9C%B0-%E7%94%9F%E4%BA%A7%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">Docker（最快上手，适合本地&#x2F;生产）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%EF%BC%88%E5%8F%AF%E5%AE%9A%E5%88%B6%E3%80%81%E6%8E%A8%E8%8D%90%E5%B8%B8%E8%A7%84%E8%87%AA%E5%BB%BA%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">从源码编译（可定制、推荐常规自建）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81-%E5%8D%95%E6%96%87%E4%BB%B6%E6%9E%84%E5%BB%BA"><span class="toc-number">2.3.</span> <span class="toc-text">静态&#x2F;单文件构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FrankenPHP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">2.4.</span> <span class="toc-text">FrankenPHP常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#frankenphp-php-server"><span class="toc-number">2.4.1.</span> <span class="toc-text">frankenphp php-server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#frankenphp-run"><span class="toc-number">2.4.2.</span> <span class="toc-text">frankenphp run</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#frankenphp-php-cli"><span class="toc-number">2.4.3.</span> <span class="toc-text">frankenphp php-cli</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#frankenphp-reload"><span class="toc-number">2.4.4.</span> <span class="toc-text">frankenphp reload</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FrankenPHP-%E9%85%8D%E7%BD%AE%E6%B8%85%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">FrankenPHP 配置清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Caddyfile"><span class="toc-number">3.1.</span> <span class="toc-text">Caddyfile</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Caddyfile-%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.1.</span> <span class="toc-text">Caddyfile 常用配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Caddyfile-%E7%A4%BA%E4%BE%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.2.</span> <span class="toc-text">Caddyfile 示例配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-%E9%85%8D%E7%BD%AE%EF%BC%88php-ini-%E4%B8%8E%E6%89%A9%E5%B1%95%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">PHP 配置（php.ini 与扩展）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FrankenPHP-%E5%B8%B8%E7%94%A8%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">3.3.</span> <span class="toc-text">FrankenPHP 常用环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Worker-%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.4.</span> <span class="toc-text">Worker 模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%9D%97-Worker%EF%BC%9A"><span class="toc-number">3.4.1.</span> <span class="toc-text">全局块 Worker：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%9C%A8%E7%AB%99%E7%82%B9%E9%87%8C%EF%BC%9A"><span class="toc-number">3.4.2.</span> <span class="toc-text">直接在站点里：</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <p>FrankenPHP 是一个把 PHP 解释器“装进”Caddy 的现代应用服务器：一个进程同时干 TLS&#x2F;HTTP&#x2F;3、静态资源和 PHP 执行，还支持 103 Early Hints、内置实时推送（Mercure）、以及常驻内存的 Worker 模式来降低延迟。<br>通俗点说，它把“Nginx + PHP-FPM + 一堆插件”合成了all in one for php web develop。</p>
+<span id="more"></span>
+<p>2025 年 5–6 月，FrankenPHP 获得 PHP 基金会 的“官方支持”，项目代码迁入 PHP 在 GitHub 的官方组织，方便核心贡献者参与、提升长期可持续性。不过日常维护仍由原作者和维护团队负责。</p>
+<p>这意味着社区层面把“现代 PHP 的官方应用服务器路线”摆上了台面：更简单的部署形态（Docker&#x2F;单文件）、更好的开箱体验（HTTP&#x2F;3、自动 HTTPS）、以及面向高并发的 Worker 模式，都会得到长期投入与生态协同。</p>
+<p>想象把「Nginx + PHP-FPM + 证书管理 + 实时推送」塞进一个更省事的“全能小机箱”里，这就是 FrankenPHP：</p>
+<pre><code>它把 PHP 解释器嵌进 Caddy Web 服务器，一个进程就能完成 HTTPS/HTTP/3、静态资源、以及 PHP 执行。
+</code></pre>
+<p>结果是：</p>
+<pre><code>部署更简单、首屏更快、并发更稳。&#39;
+</code></pre>
+<h2 id="FrankenPHP-的核心功能与优势"><a href="#FrankenPHP-的核心功能与优势" class="headerlink" title="FrankenPHP 的核心功能与优势"></a>FrankenPHP 的核心功能与优势</h2><h3 id="1-一体化：一个进程搞定-Web-PHP"><a href="#1-一体化：一个进程搞定-Web-PHP" class="headerlink" title="1) 一体化：一个进程搞定 Web + PHP"></a>1) 一体化：一个进程搞定 Web + PHP</h3><pre><code>内置 Caddy：自带自动 HTTPS、HTTP/2/HTTP/3、反代与静态资源；配置用 Caddyfile，语法直白。
+
+少一层跳转：不用再 Nginx → php-fpm 走 FastCGI，减少链路复杂度与运维成本。
+</code></pre>
+<h3 id="2-Worker-模式：把框架“常驻内存”，降低每次冷启动"><a href="#2-Worker-模式：把框架“常驻内存”，降低每次冷启动" class="headerlink" title="2) Worker 模式：把框架“常驻内存”，降低每次冷启动"></a>2) Worker 模式：把框架“常驻内存”，降低每次冷启动</h3><pre><code>传统 FPM 每个请求都要重新引导框架；Worker 模式让应用常驻内存，请求复用已初始化的容器与依赖，延迟更低、吞吐更高。
+
+Laravel、Symfony、Yii 都已提供官方集成或适配。
+</code></pre>
+<blockquote>
+<p>注意点：避免静态变量、单例在请求间泄漏状态，必要时做“请求后重置”。</p>
+</blockquote>
+<h3 id="3-103-Early-Hints：让首屏更快“动起来”"><a href="#3-103-Early-Hints：让首屏更快“动起来”" class="headerlink" title="3) 103 Early Hints：让首屏更快“动起来”"></a>3) 103 Early Hints：让首屏更快“动起来”</h3><pre><code>支持 HTTP 103 Early Hints：后端慢查询还在跑时，先把 CSS/JS 的预加载提示发给浏览器，页面更早渲染。
+官方称可带来最高约 30% 的加载改进（视页面而定）。
+</code></pre>
+<h3 id="4-内置-Mercure：零-SDK-的实时推送（SSE）"><a href="#4-内置-Mercure：零-SDK-的实时推送（SSE）" class="headerlink" title="4) 内置 Mercure：零 SDK 的实时推送（SSE）"></a>4) 内置 Mercure：零 SDK 的实时推送（SSE）</h3><pre><code>开箱就有 Mercure Hub：后端发布消息，前端通过 Server-Sent Events 直接收到，无需自己搭 WebSocket 服务或写额外 JS SDK。
+
+适合内容更新、系统通知、仪表盘等“轻实时”场景。
+</code></pre>
+<h3 id="5-单文件分发：把“PHP-Caddy-你的应用”打包成一个可执行文件"><a href="#5-单文件分发：把“PHP-Caddy-你的应用”打包成一个可执行文件" class="headerlink" title="5) 单文件分发：把“PHP + Caddy + 你的应用”打包成一个可执行文件"></a>5) 单文件分发：把“PHP + Caddy + 你的应用”打包成一个可执行文件</h3><pre><code>借助 static-php-cli，可以做“静态/几乎静态”构建，生成一个可执行文件：带 PHP 解释器、Caddy、以及你的代码与资源。
+
+用处：边缘节点、无容器环境、内网灰度、离线分发、CI/CD 工件更简洁。
+</code></pre>
+<h3 id="6-简化的配置与扩展"><a href="#6-简化的配置与扩展" class="headerlink" title="6) 简化的配置与扩展"></a>6) 简化的配置与扩展</h3><pre><code>Caddyfile 就能完成站点、TLS、静态资源缓存、Header 安全策略等常见需求。
+
+需要更多 Caddy 模块？可用 xcaddy 自定义构建，把想要的插件一起编进来。
+</code></pre>
+<h2 id="安装与启动-FrankenPHP"><a href="#安装与启动-FrankenPHP" class="headerlink" title="安装与启动 FrankenPHP"></a>安装与启动 FrankenPHP</h2><h3 id="Docker（最快上手，适合本地-生产）"><a href="#Docker（最快上手，适合本地-生产）" class="headerlink" title="Docker（最快上手，适合本地&#x2F;生产）"></a>Docker（最快上手，适合本地&#x2F;生产）</h3><p>官方镜像同时提供 Debian&#x2F;Alpine、PHP 8.2&#x2F;8.3&#x2F;8.4 多版本。</p>
+<p>一行命令即可<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -v $PWD:/app/public \</span><br><span class="line">-p 80:80 -p 443:443 -p 443:443/udp \</span><br><span class="line">dunglas/frankenphp</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h3 id="从源码编译（可定制、推荐常规自建）"><a href="#从源码编译（可定制、推荐常规自建）" class="headerlink" title="从源码编译（可定制、推荐常规自建）"></a>从源码编译（可定制、推荐常规自建）</h3><p>需要自己控制 PHP 版本&#x2F;扩展&#x2F;构建参数；“动态 PHP 库 + FrankenPHP”是推荐方式。</p>
+<p>具体方式可参见官网链接 <a target="_blank" rel="noopener" href="https://frankenphp.dev/docs/compile/">Compile From Sources</a>.</p>
+<h3 id="静态-单文件构建"><a href="#静态-单文件构建" class="headerlink" title="静态&#x2F;单文件构建"></a>静态&#x2F;单文件构建</h3><p>把 PHP 解释器 + Caddy + FrankenPHP（以及你的应用）打成“一个可执行文件”；<br>可用于内网、边缘、离线环境分发。</p>
+<blockquote>
+<p>将php业务代码打包进静态可执行文件，虽然看起来不用交付业务php代码，但是并不能起到保护业务代码的作用。<br>包含了php业务代码的静态可执行文件，在运行时，会将业务代码解压到服务器，在服务器上就可以直接提取业务代码。</p>
+</blockquote>
+<p>构建方式可参见官网链接 <a target="_blank" rel="noopener" href="https://frankenphp.dev/docs/static/">Create a Static Build</a>.</p>
+<h3 id="FrankenPHP常用命令"><a href="#FrankenPHP常用命令" class="headerlink" title="FrankenPHP常用命令"></a>FrankenPHP常用命令</h3><h4 id="frankenphp-php-server"><a href="#frankenphp-php-server" class="headerlink" title="frankenphp php-server"></a>frankenphp php-server</h4><p>用于“开箱即跑”的最小化场景；可叠加 Worker、热重载等选项。不读取 Caddyfile。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">直接在当前目录提供站点（默认根目录 public/）</span><br><span class="line">frankenphp php-server</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">启用 Worker（常驻内存）</span><br><span class="line">frankenphp php-server --worker /path/to/worker.php</span><br><span class="line"></span><br><span class="line">监听代码变更（glob 支持），自动重启 worker</span><br><span class="line">frankenphp php-server --worker /path/to/worker.php --watch=&quot;/app/**/*.php&quot;</span><br><span class="line"></span><br><span class="line">（可选）开发期开启本地 HTTPS/HTTP2/HTTP3</span><br><span class="line">frankenphp php-server --https --http-redirect</span><br></pre></td></tr></table></figure></p>
+<h4 id="frankenphp-run"><a href="#frankenphp-run" class="headerlink" title="frankenphp run"></a>frankenphp run</h4><p>用于生产&#x2F;自定义配置，读取 Caddyfile；支持 -c&#x2F;–config 指定路径。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在当前目录寻找 Caddyfile（静态二进制也会按此规则查找）</span><br><span class="line">frankenphp run</span><br><span class="line"></span><br><span class="line">显式指定 Caddyfile</span><br><span class="line">frankenphp run -c /etc/frankenphp/Caddyfile</span><br></pre></td></tr></table></figure></p>
+<h4 id="frankenphp-php-cli"><a href="#frankenphp-php-cli" class="headerlink" title="frankenphp php-cli"></a>frankenphp php-cli</h4><p>执行单次 CLI 脚本（等价“php your.php”，但走 FrankenPHP 自带的 PHP）。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frankenphp php-cli /path/to/script.php</span><br></pre></td></tr></table></figure></p>
+<h4 id="frankenphp-reload"><a href="#frankenphp-reload" class="headerlink" title="frankenphp reload"></a>frankenphp reload</h4><p>仅重载 Caddy 配置（不等同于重启 Worker 逻辑）。适合你修改了 Caddyfile 想无缝应用配置。</p>
+<pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如容器内重载 Caddy 配置</span><br><span class="line">frankenphp reload -c /etc/frankenphp/Caddyfile</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h2 id="FrankenPHP-配置清单"><a href="#FrankenPHP-配置清单" class="headerlink" title="FrankenPHP 配置清单"></a>FrankenPHP 配置清单</h2><h3 id="Caddyfile"><a href="#Caddyfile" class="headerlink" title="Caddyfile"></a>Caddyfile</h3><p>Caddyfile告诉 FrankenPHP 如何对外提供服务（域名、端口、TLS、静态资源、路由到 PHP、压缩、日志、安全头、Worker 等）。</p>
+<p>Caddyfile在Docker 镜像里通常的路径是 &#x2F;etc&#x2F;frankenphp&#x2F;Caddyfile，独立二进制默认找当前工作目录（可 -c 指定）。</p>
+<h4 id="Caddyfile-常用配置"><a href="#Caddyfile-常用配置" class="headerlink" title="Caddyfile 常用配置"></a>Caddyfile 常用配置</h4><pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">example.com &#123; ... &#125;：定义一个站点（可写多个）。</span><br><span class="line"></span><br><span class="line">root * /app/public：站点根目录（通常指向 public/）。</span><br><span class="line"></span><br><span class="line">encode zstd br gzip：开启压缩，减小传输体积。</span><br><span class="line"></span><br><span class="line">php_server &#123; ... &#125;：一条指令搞定“重写到 index.php + 执行 PHP + 静态文件”，日常首选。</span><br><span class="line"></span><br><span class="line">env KEY VAL：给 PHP 传入环境变量（仅该站点）。</span><br><span class="line"></span><br><span class="line">worker &#123; file index.php; num 4; &#125;：为该站点启用 Worker（常驻内存），提升吞吐/降低 TTFB。</span><br><span class="line"></span><br><span class="line">file_server：提供静态文件（可配长缓存）。</span><br><span class="line"></span><br><span class="line">header &#123; ... &#125;：加安全响应头（HSTS、CSP、X-Frame-Options 等）。</span><br><span class="line"></span><br><span class="line">log &#123; ... &#125;：访问日志（输出位置、格式、筛选）。</span><br><span class="line"></span><br><span class="line">@assets &#123; … &#125; + handle @assets &#123; … &#125;：匹配静态资源并设置缓存头。</span><br><span class="line"></span><br><span class="line">全局块 &#123; frankenphp &#123; … &#125; &#125;：引擎层配置（如 php_ini memory_limit 256M、全局 worker、线程数等）。</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="Caddyfile-示例配置"><a href="#Caddyfile-示例配置" class="headerlink" title="Caddyfile 示例配置"></a>Caddyfile 示例配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    auto_https off</span><br><span class="line">    # 全局设置</span><br><span class="line">    http_port 80</span><br><span class="line">    auto_https disable_redirects</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.test.net:80 &#123;</span><br><span class="line">    root /home/project/public</span><br><span class="line">    # 日志</span><br><span class="line">    log &#123;</span><br><span class="line">        output file /var/log/frankenphp-access.log</span><br><span class="line">        format json</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 自定义 Header</span><br><span class="line">    # header &#123;</span><br><span class="line">    #     X-Frame-Options &quot;DENY&quot;</span><br><span class="line">    #     X-Content-Type-Options &quot;nosniff&quot;</span><br><span class="line">    # &#125;</span><br><span class="line"></span><br><span class="line">    try_files &#123;path&#125; &#123;path&#125;/ /bootstrap.php?&#123;query&#125;</span><br><span class="line"></span><br><span class="line">    php_server &#123;</span><br><span class="line">        root /homeh/project/public/ # 允许更好的缓存</span><br><span class="line">        env run_mode &quot;development&quot;</span><br><span class="line">        env REQUEST_PROJECT &quot;Account&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PHP-配置（php-ini-与扩展）"><a href="#PHP-配置（php-ini-与扩展）" class="headerlink" title="PHP 配置（php.ini 与扩展）"></a>PHP 配置（php.ini 与扩展）</h3><p>配置 PHP 运行时的资源限制、功能开关、扩展加载等（与 Web 服务器无关，影响 CLI&#x2F;Worker&#x2F;请求处理本身）。</p>
+<p>文件位置常见：Docker 下 &#x2F;usr&#x2F;local&#x2F;etc&#x2F;php&#x2F;php.ini（可从模板复制）。</p>
+<p>独立二进制优先读当前目录或 &#x2F;etc&#x2F;frankenphp&#x2F;php.ini。</p>
+<blockquote>
+<p>静态二进制所需扩展需构建时集成。</p>
+</blockquote>
+<h3 id="FrankenPHP-常用环境变量"><a href="#FrankenPHP-常用环境变量" class="headerlink" title="FrankenPHP 常用环境变量"></a>FrankenPHP 常用环境变量</h3><p>SERVER_NAME</p>
+<pre><code>设定监听地址与主机名；这些主机名也会用于自动签发的证书。
+用法：SERVER_NAME=&quot;localhost&quot;（本地 HTTPS），或 SERVER_NAME=&quot;:80&quot;（只开 80 端口，常用于前面已有反代/证书时）。
+</code></pre>
+<p>SERVER_ROOT</p>
+<pre><code>设置站点根目录，默认是 public/。
+用法：SERVER_ROOT=&quot;/app/public&quot;。
+</code></pre>
+<p>CADDY_GLOBAL_OPTIONS</p>
+<pre><code>向 Caddyfile 的全局块注入配置（无须改 Caddyfile）。
+例：启用调试 CADDY_GLOBAL_OPTIONS=&quot;debug&quot;；或开启 HTTP/1 全双工：
+
+CADDY_GLOBAL_OPTIONS=&#39;servers &#123; enable_full_duplex &#125;&#39;。
+</code></pre>
+<p>FRANKENPHP_CONFIG</p>
+<pre><code>向全局 frankenphp &#123; … &#125; 指令块注入 FrankenPHP 配置（比如 Worker）。
+例：FRANKENPHP_CONFIG=&#39;worker /app/public/index.php 4&#39;。也可配合默认模板把多行片段注入。
+</code></pre>
+<p>PHP_INI_SCAN_DIR</p>
+<pre><code>追加加载的 *.ini 目录（PHP 自带能力），便于把自定义 php.ini 片段随容器/环境注入。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run -v $PWD:/app \</span><br><span class="line">  -e SERVER_NAME=&quot;:80&quot; \</span><br><span class="line">  -e SERVER_ROOT=&quot;/app/public&quot; \</span><br><span class="line">  -e CADDY_GLOBAL_OPTIONS=&quot;debug&quot; \</span><br><span class="line">  -e FRANKENPHP_CONFIG=&quot;worker /app/public/index.php 4&quot; \</span><br><span class="line">  -p 80:80 -p 443:443 -p 443:443/udp \</span><br><span class="line">  dunglas/frankenphp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Worker-模式"><a href="#Worker-模式" class="headerlink" title="Worker 模式"></a>Worker 模式</h3><p>Worker 模式让框架常驻内存，显著降低 TTFB&#x2F;CPU 抖动。两种写法：</p>
+<h4 id="全局块-Worker："><a href="#全局块-Worker：" class="headerlink" title="全局块 Worker："></a>全局块 Worker：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  frankenphp &#123;</span><br><span class="line">    worker &#123;</span><br><span class="line">      file /app/public/index.php</span><br><span class="line">      num 4                     # worker 数，按核数调</span><br><span class="line">      env APP_ENV production</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="直接在站点里："><a href="#直接在站点里：" class="headerlink" title="直接在站点里："></a>直接在站点里：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">example.com &#123;</span><br><span class="line">  root * /app/public</span><br><span class="line">  php_server &#123;</span><br><span class="line">    worker index.php 4         # 指定 worker 与并发数</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启用 Caddy admin 后，通过POST &#x2F;frankenphp&#x2F;workers&#x2F;restart 可优雅重启全部 worker。<br>也可在开发期用 –watch 自动重启。</p>
+<p>reference：</p>
+<p>[^1] <a target="_blank" rel="noopener" href="https://frankenphp.dev/docs/">https://frankenphp.dev/docs/</a></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://blog.gaoyuan.xyz">GaoYuan</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://blog.gaoyuan.xyz/2025/09/20/from-nginx-fpm-to-frankenphp/">https://blog.gaoyuan.xyz/2025/09/20/from-nginx-fpm-to-frankenphp/</a>
+  </p>
+  <p class="copyright-item">
+    <span>Use Soulens: </span>
+    <a target="_blank" rel="noopener" href="https://apps.apple.com/us/app/soulens/id6476761627">Know Destiny, Chart Journey</a>
+  </p>  
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/php/">php</a>
+      
+      <a href="/tags/Caddy/">Caddy</a>
+      
+      <a href="/tags/nginx/">nginx</a>
+      
+      <a href="/tags/fpm/">fpm</a>
+      
+      <a href="/tags/frankenphp/">frankenphp</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      
+      <a class="next" href="/2025/07/02/Dear-child-let-me-see-the-real-you/">  
+        <span class="next-text nav-default">亲爱的小孩，让我看见真正的你</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:gaoyuan.blue@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/jqlblue" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2025      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">GaoYuan</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>

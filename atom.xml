@@ -3,11 +3,11 @@
   <title>Soulink</title>
   
   <subtitle>Code the Self, Connect the Soul.</subtitle>
-  <link href="https://jqlblue.github.io/atom.xml" rel="self"/>
+  <link href="https://blog.gaoyuan.xyz/atom.xml" rel="self"/>
   
-  <link href="https://jqlblue.github.io/"/>
-  <updated>2025-07-02T08:33:44.159Z</updated>
-  <id>https://jqlblue.github.io/</id>
+  <link href="https://blog.gaoyuan.xyz/"/>
+  <updated>2025-09-20T06:22:41.924Z</updated>
+  <id>https://blog.gaoyuan.xyz/</id>
   
   <author>
     <name>GaoYuan</name>
@@ -17,9 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>从nginx+fpm迁移到frankenphp</title>
+    <link href="https://blog.gaoyuan.xyz/2025/09/20/from-nginx-fpm-to-frankenphp/"/>
+    <id>https://blog.gaoyuan.xyz/2025/09/20/from-nginx-fpm-to-frankenphp/</id>
+    <published>2025-09-20T03:52:49.000Z</published>
+    <updated>2025-09-20T06:22:41.924Z</updated>
+    
+    <content type="html"><![CDATA[<p>FrankenPHP 是一个把 PHP 解释器“装进”Caddy 的现代应用服务器：一个进程同时干 TLS&#x2F;HTTP&#x2F;3、静态资源和 PHP 执行，还支持 103 Early Hints、内置实时推送（Mercure）、以及常驻内存的 Worker 模式来降低延迟。<br>通俗点说，它把“Nginx + PHP-FPM + 一堆插件”合成了all in one for php web develop。</p><span id="more"></span><p>2025 年 5–6 月，FrankenPHP 获得 PHP 基金会 的“官方支持”，项目代码迁入 PHP 在 GitHub 的官方组织，方便核心贡献者参与、提升长期可持续性。不过日常维护仍由原作者和维护团队负责。</p><p>这意味着社区层面把“现代 PHP 的官方应用服务器路线”摆上了台面：更简单的部署形态（Docker&#x2F;单文件）、更好的开箱体验（HTTP&#x2F;3、自动 HTTPS）、以及面向高并发的 Worker 模式，都会得到长期投入与生态协同。</p><p>想象把「Nginx + PHP-FPM + 证书管理 + 实时推送」塞进一个更省事的“全能小机箱”里，这就是 FrankenPHP：</p><pre><code>它把 PHP 解释器嵌进 Caddy Web 服务器，一个进程就能完成 HTTPS/HTTP/3、静态资源、以及 PHP 执行。</code></pre><p>结果是：</p><pre><code>部署更简单、首屏更快、并发更稳。&#39;</code></pre><h2 id="FrankenPHP-的核心功能与优势"><a href="#FrankenPHP-的核心功能与优势" class="headerlink" title="FrankenPHP 的核心功能与优势"></a>FrankenPHP 的核心功能与优势</h2><h3 id="1-一体化：一个进程搞定-Web-PHP"><a href="#1-一体化：一个进程搞定-Web-PHP" class="headerlink" title="1) 一体化：一个进程搞定 Web + PHP"></a>1) 一体化：一个进程搞定 Web + PHP</h3><pre><code>内置 Caddy：自带自动 HTTPS、HTTP/2/HTTP/3、反代与静态资源；配置用 Caddyfile，语法直白。少一层跳转：不用再 Nginx → php-fpm 走 FastCGI，减少链路复杂度与运维成本。</code></pre><h3 id="2-Worker-模式：把框架“常驻内存”，降低每次冷启动"><a href="#2-Worker-模式：把框架“常驻内存”，降低每次冷启动" class="headerlink" title="2) Worker 模式：把框架“常驻内存”，降低每次冷启动"></a>2) Worker 模式：把框架“常驻内存”，降低每次冷启动</h3><pre><code>传统 FPM 每个请求都要重新引导框架；Worker 模式让应用常驻内存，请求复用已初始化的容器与依赖，延迟更低、吞吐更高。Laravel、Symfony、Yii 都已提供官方集成或适配。</code></pre><blockquote><p>注意点：避免静态变量、单例在请求间泄漏状态，必要时做“请求后重置”。</p></blockquote><h3 id="3-103-Early-Hints：让首屏更快“动起来”"><a href="#3-103-Early-Hints：让首屏更快“动起来”" class="headerlink" title="3) 103 Early Hints：让首屏更快“动起来”"></a>3) 103 Early Hints：让首屏更快“动起来”</h3><pre><code>支持 HTTP 103 Early Hints：后端慢查询还在跑时，先把 CSS/JS 的预加载提示发给浏览器，页面更早渲染。官方称可带来最高约 30% 的加载改进（视页面而定）。</code></pre><h3 id="4-内置-Mercure：零-SDK-的实时推送（SSE）"><a href="#4-内置-Mercure：零-SDK-的实时推送（SSE）" class="headerlink" title="4) 内置 Mercure：零 SDK 的实时推送（SSE）"></a>4) 内置 Mercure：零 SDK 的实时推送（SSE）</h3><pre><code>开箱就有 Mercure Hub：后端发布消息，前端通过 Server-Sent Events 直接收到，无需自己搭 WebSocket 服务或写额外 JS SDK。适合内容更新、系统通知、仪表盘等“轻实时”场景。</code></pre><h3 id="5-单文件分发：把“PHP-Caddy-你的应用”打包成一个可执行文件"><a href="#5-单文件分发：把“PHP-Caddy-你的应用”打包成一个可执行文件" class="headerlink" title="5) 单文件分发：把“PHP + Caddy + 你的应用”打包成一个可执行文件"></a>5) 单文件分发：把“PHP + Caddy + 你的应用”打包成一个可执行文件</h3><pre><code>借助 static-php-cli，可以做“静态/几乎静态”构建，生成一个可执行文件：带 PHP 解释器、Caddy、以及你的代码与资源。用处：边缘节点、无容器环境、内网灰度、离线分发、CI/CD 工件更简洁。</code></pre><h3 id="6-简化的配置与扩展"><a href="#6-简化的配置与扩展" class="headerlink" title="6) 简化的配置与扩展"></a>6) 简化的配置与扩展</h3><pre><code>Caddyfile 就能完成站点、TLS、静态资源缓存、Header 安全策略等常见需求。需要更多 Caddy 模块？可用 xcaddy 自定义构建，把想要的插件一起编进来。</code></pre><h2 id="安装与启动-FrankenPHP"><a href="#安装与启动-FrankenPHP" class="headerlink" title="安装与启动 FrankenPHP"></a>安装与启动 FrankenPHP</h2><h3 id="Docker（最快上手，适合本地-生产）"><a href="#Docker（最快上手，适合本地-生产）" class="headerlink" title="Docker（最快上手，适合本地&#x2F;生产）"></a>Docker（最快上手，适合本地&#x2F;生产）</h3><p>官方镜像同时提供 Debian&#x2F;Alpine、PHP 8.2&#x2F;8.3&#x2F;8.4 多版本。</p><p>一行命令即可<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -v $PWD:/app/public \</span><br><span class="line">-p 80:80 -p 443:443 -p 443:443/udp \</span><br><span class="line">dunglas/frankenphp</span><br><span class="line"></span><br></pre></td></tr></table></figure></p><h3 id="从源码编译（可定制、推荐常规自建）"><a href="#从源码编译（可定制、推荐常规自建）" class="headerlink" title="从源码编译（可定制、推荐常规自建）"></a>从源码编译（可定制、推荐常规自建）</h3><p>需要自己控制 PHP 版本&#x2F;扩展&#x2F;构建参数；“动态 PHP 库 + FrankenPHP”是推荐方式。</p><p>具体方式可参见官网链接 <a href="https://frankenphp.dev/docs/compile/">Compile From Sources</a>.</p><h3 id="静态-单文件构建"><a href="#静态-单文件构建" class="headerlink" title="静态&#x2F;单文件构建"></a>静态&#x2F;单文件构建</h3><p>把 PHP 解释器 + Caddy + FrankenPHP（以及你的应用）打成“一个可执行文件”；<br>可用于内网、边缘、离线环境分发。</p><blockquote><p>将php业务代码打包进静态可执行文件，虽然看起来不用交付业务php代码，但是并不能起到保护业务代码的作用。<br>包含了php业务代码的静态可执行文件，在运行时，会将业务代码解压到服务器，在服务器上就可以直接提取业务代码。</p></blockquote><p>构建方式可参见官网链接 <a href="https://frankenphp.dev/docs/static/">Create a Static Build</a>.</p><h3 id="FrankenPHP常用命令"><a href="#FrankenPHP常用命令" class="headerlink" title="FrankenPHP常用命令"></a>FrankenPHP常用命令</h3><h4 id="frankenphp-php-server"><a href="#frankenphp-php-server" class="headerlink" title="frankenphp php-server"></a>frankenphp php-server</h4><p>用于“开箱即跑”的最小化场景；可叠加 Worker、热重载等选项。不读取 Caddyfile。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">直接在当前目录提供站点（默认根目录 public/）</span><br><span class="line">frankenphp php-server</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">启用 Worker（常驻内存）</span><br><span class="line">frankenphp php-server --worker /path/to/worker.php</span><br><span class="line"></span><br><span class="line">监听代码变更（glob 支持），自动重启 worker</span><br><span class="line">frankenphp php-server --worker /path/to/worker.php --watch=&quot;/app/**/*.php&quot;</span><br><span class="line"></span><br><span class="line">（可选）开发期开启本地 HTTPS/HTTP2/HTTP3</span><br><span class="line">frankenphp php-server --https --http-redirect</span><br></pre></td></tr></table></figure></p><h4 id="frankenphp-run"><a href="#frankenphp-run" class="headerlink" title="frankenphp run"></a>frankenphp run</h4><p>用于生产&#x2F;自定义配置，读取 Caddyfile；支持 -c&#x2F;–config 指定路径。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在当前目录寻找 Caddyfile（静态二进制也会按此规则查找）</span><br><span class="line">frankenphp run</span><br><span class="line"></span><br><span class="line">显式指定 Caddyfile</span><br><span class="line">frankenphp run -c /etc/frankenphp/Caddyfile</span><br></pre></td></tr></table></figure></p><h4 id="frankenphp-php-cli"><a href="#frankenphp-php-cli" class="headerlink" title="frankenphp php-cli"></a>frankenphp php-cli</h4><p>执行单次 CLI 脚本（等价“php your.php”，但走 FrankenPHP 自带的 PHP）。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frankenphp php-cli /path/to/script.php</span><br></pre></td></tr></table></figure></p><h4 id="frankenphp-reload"><a href="#frankenphp-reload" class="headerlink" title="frankenphp reload"></a>frankenphp reload</h4><p>仅重载 Caddy 配置（不等同于重启 Worker 逻辑）。适合你修改了 Caddyfile 想无缝应用配置。</p><pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如容器内重载 Caddy 配置</span><br><span class="line">frankenphp reload -c /etc/frankenphp/Caddyfile</span><br></pre></td></tr></table></figure></code></pre><h2 id="FrankenPHP-配置清单"><a href="#FrankenPHP-配置清单" class="headerlink" title="FrankenPHP 配置清单"></a>FrankenPHP 配置清单</h2><h3 id="Caddyfile"><a href="#Caddyfile" class="headerlink" title="Caddyfile"></a>Caddyfile</h3><p>Caddyfile告诉 FrankenPHP 如何对外提供服务（域名、端口、TLS、静态资源、路由到 PHP、压缩、日志、安全头、Worker 等）。</p><p>Caddyfile在Docker 镜像里通常的路径是 &#x2F;etc&#x2F;frankenphp&#x2F;Caddyfile，独立二进制默认找当前工作目录（可 -c 指定）。</p><h4 id="Caddyfile-常用配置"><a href="#Caddyfile-常用配置" class="headerlink" title="Caddyfile 常用配置"></a>Caddyfile 常用配置</h4><pre><code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">example.com &#123; ... &#125;：定义一个站点（可写多个）。</span><br><span class="line"></span><br><span class="line">root * /app/public：站点根目录（通常指向 public/）。</span><br><span class="line"></span><br><span class="line">encode zstd br gzip：开启压缩，减小传输体积。</span><br><span class="line"></span><br><span class="line">php_server &#123; ... &#125;：一条指令搞定“重写到 index.php + 执行 PHP + 静态文件”，日常首选。</span><br><span class="line"></span><br><span class="line">env KEY VAL：给 PHP 传入环境变量（仅该站点）。</span><br><span class="line"></span><br><span class="line">worker &#123; file index.php; num 4; &#125;：为该站点启用 Worker（常驻内存），提升吞吐/降低 TTFB。</span><br><span class="line"></span><br><span class="line">file_server：提供静态文件（可配长缓存）。</span><br><span class="line"></span><br><span class="line">header &#123; ... &#125;：加安全响应头（HSTS、CSP、X-Frame-Options 等）。</span><br><span class="line"></span><br><span class="line">log &#123; ... &#125;：访问日志（输出位置、格式、筛选）。</span><br><span class="line"></span><br><span class="line">@assets &#123; … &#125; + handle @assets &#123; … &#125;：匹配静态资源并设置缓存头。</span><br><span class="line"></span><br><span class="line">全局块 &#123; frankenphp &#123; … &#125; &#125;：引擎层配置（如 php_ini memory_limit 256M、全局 worker、线程数等）。</span><br></pre></td></tr></table></figure></code></pre><h4 id="Caddyfile-示例配置"><a href="#Caddyfile-示例配置" class="headerlink" title="Caddyfile 示例配置"></a>Caddyfile 示例配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    auto_https off</span><br><span class="line">    # 全局设置</span><br><span class="line">    http_port 80</span><br><span class="line">    auto_https disable_redirects</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.test.net:80 &#123;</span><br><span class="line">    root /home/project/public</span><br><span class="line">    # 日志</span><br><span class="line">    log &#123;</span><br><span class="line">        output file /var/log/frankenphp-access.log</span><br><span class="line">        format json</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 自定义 Header</span><br><span class="line">    # header &#123;</span><br><span class="line">    #     X-Frame-Options &quot;DENY&quot;</span><br><span class="line">    #     X-Content-Type-Options &quot;nosniff&quot;</span><br><span class="line">    # &#125;</span><br><span class="line"></span><br><span class="line">    try_files &#123;path&#125; &#123;path&#125;/ /bootstrap.php?&#123;query&#125;</span><br><span class="line"></span><br><span class="line">    php_server &#123;</span><br><span class="line">        root /homeh/project/public/ # 允许更好的缓存</span><br><span class="line">        env run_mode &quot;development&quot;</span><br><span class="line">        env REQUEST_PROJECT &quot;Account&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="PHP-配置（php-ini-与扩展）"><a href="#PHP-配置（php-ini-与扩展）" class="headerlink" title="PHP 配置（php.ini 与扩展）"></a>PHP 配置（php.ini 与扩展）</h3><p>配置 PHP 运行时的资源限制、功能开关、扩展加载等（与 Web 服务器无关，影响 CLI&#x2F;Worker&#x2F;请求处理本身）。</p><p>文件位置常见：Docker 下 &#x2F;usr&#x2F;local&#x2F;etc&#x2F;php&#x2F;php.ini（可从模板复制）。</p><p>独立二进制优先读当前目录或 &#x2F;etc&#x2F;frankenphp&#x2F;php.ini。</p><blockquote><p>静态二进制所需扩展需构建时集成。</p></blockquote><h3 id="FrankenPHP-常用环境变量"><a href="#FrankenPHP-常用环境变量" class="headerlink" title="FrankenPHP 常用环境变量"></a>FrankenPHP 常用环境变量</h3><p>SERVER_NAME</p><pre><code>设定监听地址与主机名；这些主机名也会用于自动签发的证书。用法：SERVER_NAME=&quot;localhost&quot;（本地 HTTPS），或 SERVER_NAME=&quot;:80&quot;（只开 80 端口，常用于前面已有反代/证书时）。</code></pre><p>SERVER_ROOT</p><pre><code>设置站点根目录，默认是 public/。用法：SERVER_ROOT=&quot;/app/public&quot;。</code></pre><p>CADDY_GLOBAL_OPTIONS</p><pre><code>向 Caddyfile 的全局块注入配置（无须改 Caddyfile）。例：启用调试 CADDY_GLOBAL_OPTIONS=&quot;debug&quot;；或开启 HTTP/1 全双工：CADDY_GLOBAL_OPTIONS=&#39;servers &#123; enable_full_duplex &#125;&#39;。</code></pre><p>FRANKENPHP_CONFIG</p><pre><code>向全局 frankenphp &#123; … &#125; 指令块注入 FrankenPHP 配置（比如 Worker）。例：FRANKENPHP_CONFIG=&#39;worker /app/public/index.php 4&#39;。也可配合默认模板把多行片段注入。</code></pre><p>PHP_INI_SCAN_DIR</p><pre><code>追加加载的 *.ini 目录（PHP 自带能力），便于把自定义 php.ini 片段随容器/环境注入。</code></pre><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run -v $PWD:/app \</span><br><span class="line">  -e SERVER_NAME=&quot;:80&quot; \</span><br><span class="line">  -e SERVER_ROOT=&quot;/app/public&quot; \</span><br><span class="line">  -e CADDY_GLOBAL_OPTIONS=&quot;debug&quot; \</span><br><span class="line">  -e FRANKENPHP_CONFIG=&quot;worker /app/public/index.php 4&quot; \</span><br><span class="line">  -p 80:80 -p 443:443 -p 443:443/udp \</span><br><span class="line">  dunglas/frankenphp</span><br><span class="line"></span><br></pre></td></tr></table></figure><h3 id="Worker-模式"><a href="#Worker-模式" class="headerlink" title="Worker 模式"></a>Worker 模式</h3><p>Worker 模式让框架常驻内存，显著降低 TTFB&#x2F;CPU 抖动。两种写法：</p><h4 id="全局块-Worker："><a href="#全局块-Worker：" class="headerlink" title="全局块 Worker："></a>全局块 Worker：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  frankenphp &#123;</span><br><span class="line">    worker &#123;</span><br><span class="line">      file /app/public/index.php</span><br><span class="line">      num 4                     # worker 数，按核数调</span><br><span class="line">      env APP_ENV production</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="直接在站点里："><a href="#直接在站点里：" class="headerlink" title="直接在站点里："></a>直接在站点里：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">example.com &#123;</span><br><span class="line">  root * /app/public</span><br><span class="line">  php_server &#123;</span><br><span class="line">    worker index.php 4         # 指定 worker 与并发数</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>启用 Caddy admin 后，通过POST &#x2F;frankenphp&#x2F;workers&#x2F;restart 可优雅重启全部 worker。<br>也可在开发期用 –watch 自动重启。</p><p>reference：</p><p>[^1] <a href="https://frankenphp.dev/docs/">https://frankenphp.dev/docs/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;FrankenPHP 是一个把 PHP 解释器“装进”Caddy 的现代应用服务器：一个进程同时干 TLS&amp;#x2F;HTTP&amp;#x2F;3、静态资源和 PHP 执行，还支持 103 Early Hints、内置实时推送（Mercure）、以及常驻内存的 Worker 模式来降低延迟。&lt;br&gt;通俗点说，它把“Nginx + PHP-FPM + 一堆插件”合成了all in one for php web develop。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="php" scheme="https://blog.gaoyuan.xyz/categories/php/"/>
+    
+    
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
+    
+    <category term="Caddy" scheme="https://blog.gaoyuan.xyz/tags/Caddy/"/>
+    
+    <category term="nginx" scheme="https://blog.gaoyuan.xyz/tags/nginx/"/>
+    
+    <category term="fpm" scheme="https://blog.gaoyuan.xyz/tags/fpm/"/>
+    
+    <category term="frankenphp" scheme="https://blog.gaoyuan.xyz/tags/frankenphp/"/>
+    
+  </entry>
+  
+  <entry>
     <title>亲爱的小孩，让我看见真正的你</title>
-    <link href="https://jqlblue.github.io/2025/07/02/Dear-child-let-me-see-the-real-you/"/>
-    <id>https://jqlblue.github.io/2025/07/02/Dear-child-let-me-see-the-real-you/</id>
+    <link href="https://blog.gaoyuan.xyz/2025/07/02/Dear-child-let-me-see-the-real-you/"/>
+    <id>https://blog.gaoyuan.xyz/2025/07/02/Dear-child-let-me-see-the-real-you/</id>
     <published>2025-07-02T08:03:51.000Z</published>
     <updated>2025-07-02T08:33:44.159Z</updated>
     
@@ -30,21 +59,21 @@
     
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/categories/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/categories/metaphysics/"/>
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/tags/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/tags/metaphysics/"/>
     
-    <category term="人类图" scheme="https://jqlblue.github.io/tags/%E4%BA%BA%E7%B1%BB%E5%9B%BE/"/>
+    <category term="人类图" scheme="https://blog.gaoyuan.xyz/tags/%E4%BA%BA%E7%B1%BB%E5%9B%BE/"/>
     
-    <category term="human design" scheme="https://jqlblue.github.io/tags/human-design/"/>
+    <category term="human design" scheme="https://blog.gaoyuan.xyz/tags/human-design/"/>
     
   </entry>
   
   <entry>
     <title>路由器和命理学习之旅</title>
-    <link href="https://jqlblue.github.io/2025/06/19/Routers-and-Numerology-Learning-Journey/"/>
-    <id>https://jqlblue.github.io/2025/06/19/Routers-and-Numerology-Learning-Journey/</id>
+    <link href="https://blog.gaoyuan.xyz/2025/06/19/Routers-and-Numerology-Learning-Journey/"/>
+    <id>https://blog.gaoyuan.xyz/2025/06/19/Routers-and-Numerology-Learning-Journey/</id>
     <published>2025-06-19T07:08:24.000Z</published>
     <updated>2025-06-19T07:48:32.133Z</updated>
     
@@ -55,25 +84,25 @@
     
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/categories/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/categories/metaphysics/"/>
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/tags/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/tags/metaphysics/"/>
     
-    <category term="命理" scheme="https://jqlblue.github.io/tags/%E5%91%BD%E7%90%86/"/>
+    <category term="命理" scheme="https://blog.gaoyuan.xyz/tags/%E5%91%BD%E7%90%86/"/>
     
-    <category term="人生选择" scheme="https://jqlblue.github.io/tags/%E4%BA%BA%E7%94%9F%E9%80%89%E6%8B%A9/"/>
+    <category term="人生选择" scheme="https://blog.gaoyuan.xyz/tags/%E4%BA%BA%E7%94%9F%E9%80%89%E6%8B%A9/"/>
     
-    <category term="八字" scheme="https://jqlblue.github.io/tags/%E5%85%AB%E5%AD%97/"/>
+    <category term="八字" scheme="https://blog.gaoyuan.xyz/tags/%E5%85%AB%E5%AD%97/"/>
     
-    <category term="易学" scheme="https://jqlblue.github.io/tags/%E6%98%93%E5%AD%A6/"/>
+    <category term="易学" scheme="https://blog.gaoyuan.xyz/tags/%E6%98%93%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title>宿命论与自由意志</title>
-    <link href="https://jqlblue.github.io/2025/06/19/Fatalism-and-free-will/"/>
-    <id>https://jqlblue.github.io/2025/06/19/Fatalism-and-free-will/</id>
+    <link href="https://blog.gaoyuan.xyz/2025/06/19/Fatalism-and-free-will/"/>
+    <id>https://blog.gaoyuan.xyz/2025/06/19/Fatalism-and-free-will/</id>
     <published>2025-06-19T02:04:31.000Z</published>
     <updated>2025-06-19T02:16:31.659Z</updated>
     
@@ -84,21 +113,21 @@
     
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/categories/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/categories/metaphysics/"/>
     
     
-    <category term="metaphysics" scheme="https://jqlblue.github.io/tags/metaphysics/"/>
+    <category term="metaphysics" scheme="https://blog.gaoyuan.xyz/tags/metaphysics/"/>
     
-    <category term="命理" scheme="https://jqlblue.github.io/tags/%E5%91%BD%E7%90%86/"/>
+    <category term="命理" scheme="https://blog.gaoyuan.xyz/tags/%E5%91%BD%E7%90%86/"/>
     
-    <category term="人生选择" scheme="https://jqlblue.github.io/tags/%E4%BA%BA%E7%94%9F%E9%80%89%E6%8B%A9/"/>
+    <category term="人生选择" scheme="https://blog.gaoyuan.xyz/tags/%E4%BA%BA%E7%94%9F%E9%80%89%E6%8B%A9/"/>
     
   </entry>
   
   <entry>
     <title>flutter入坑指南</title>
-    <link href="https://jqlblue.github.io/2020/02/28/guide-of-start-using-flutter/"/>
-    <id>https://jqlblue.github.io/2020/02/28/guide-of-start-using-flutter/</id>
+    <link href="https://blog.gaoyuan.xyz/2020/02/28/guide-of-start-using-flutter/"/>
+    <id>https://blog.gaoyuan.xyz/2020/02/28/guide-of-start-using-flutter/</id>
     <published>2020-02-27T19:20:00.000Z</published>
     <updated>2025-06-09T23:54:02.611Z</updated>
     
@@ -109,19 +138,19 @@
     
     
     
-    <category term="mobile" scheme="https://jqlblue.github.io/categories/mobile/"/>
+    <category term="mobile" scheme="https://blog.gaoyuan.xyz/categories/mobile/"/>
     
     
-    <category term="mobile" scheme="https://jqlblue.github.io/tags/mobile/"/>
+    <category term="mobile" scheme="https://blog.gaoyuan.xyz/tags/mobile/"/>
     
-    <category term="flutter" scheme="https://jqlblue.github.io/tags/flutter/"/>
+    <category term="flutter" scheme="https://blog.gaoyuan.xyz/tags/flutter/"/>
     
   </entry>
   
   <entry>
     <title>基于Opcache发布php项目</title>
-    <link href="https://jqlblue.github.io/2017/12/14/use-opcache-to-deploy-php/"/>
-    <id>https://jqlblue.github.io/2017/12/14/use-opcache-to-deploy-php/</id>
+    <link href="https://blog.gaoyuan.xyz/2017/12/14/use-opcache-to-deploy-php/"/>
+    <id>https://blog.gaoyuan.xyz/2017/12/14/use-opcache-to-deploy-php/</id>
     <published>2017-12-14T03:17:00.000Z</published>
     <updated>2025-06-09T23:54:02.610Z</updated>
     
@@ -132,19 +161,19 @@
     
     
     
-    <category term="php" scheme="https://jqlblue.github.io/categories/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/categories/php/"/>
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/tags/devops/"/>
     
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
     
   </entry>
   
   <entry>
     <title>深入理解双因子认证</title>
-    <link href="https://jqlblue.github.io/2017/01/05/2fa-a-programmers-perspective/"/>
-    <id>https://jqlblue.github.io/2017/01/05/2fa-a-programmers-perspective/</id>
+    <link href="https://blog.gaoyuan.xyz/2017/01/05/2fa-a-programmers-perspective/"/>
+    <id>https://blog.gaoyuan.xyz/2017/01/05/2fa-a-programmers-perspective/</id>
     <published>2017-01-05T04:03:00.000Z</published>
     <updated>2025-06-09T23:54:02.610Z</updated>
     
@@ -155,17 +184,17 @@
     
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/devops/"/>
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/tags/devops/"/>
     
   </entry>
   
   <entry>
     <title>mac终端穿墙技术汇总</title>
-    <link href="https://jqlblue.github.io/2016/11/17/mac-terminal-cross-gfw/"/>
-    <id>https://jqlblue.github.io/2016/11/17/mac-terminal-cross-gfw/</id>
+    <link href="https://blog.gaoyuan.xyz/2016/11/17/mac-terminal-cross-gfw/"/>
+    <id>https://blog.gaoyuan.xyz/2016/11/17/mac-terminal-cross-gfw/</id>
     <published>2016-11-17T02:32:39.000Z</published>
     <updated>2025-06-09T23:54:02.609Z</updated>
     
@@ -176,19 +205,19 @@
     
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/devops/"/>
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/tags/devops/"/>
     
-    <category term="gfw" scheme="https://jqlblue.github.io/tags/gfw/"/>
+    <category term="gfw" scheme="https://blog.gaoyuan.xyz/tags/gfw/"/>
     
   </entry>
   
   <entry>
     <title>使用charles在移动设备上捕获https数据包</title>
-    <link href="https://jqlblue.github.io/2016/06/30/charles-https/"/>
-    <id>https://jqlblue.github.io/2016/06/30/charles-https/</id>
+    <link href="https://blog.gaoyuan.xyz/2016/06/30/charles-https/"/>
+    <id>https://blog.gaoyuan.xyz/2016/06/30/charles-https/</id>
     <published>2016-06-30T08:38:16.000Z</published>
     <updated>2025-06-09T23:54:02.608Z</updated>
     
@@ -199,23 +228,23 @@
     
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/devops/"/>
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/tags/devops/"/>
     
-    <category term="ios" scheme="https://jqlblue.github.io/tags/ios/"/>
+    <category term="ios" scheme="https://blog.gaoyuan.xyz/tags/ios/"/>
     
-    <category term="charles" scheme="https://jqlblue.github.io/tags/charles/"/>
+    <category term="charles" scheme="https://blog.gaoyuan.xyz/tags/charles/"/>
     
-    <category term="https" scheme="https://jqlblue.github.io/tags/https/"/>
+    <category term="https" scheme="https://blog.gaoyuan.xyz/tags/https/"/>
     
   </entry>
   
   <entry>
     <title>互联网创业公司是否需要后端工程师</title>
-    <link href="https://jqlblue.github.io/2015/03/30/does-startup-company-need-backend-development-engineer/"/>
-    <id>https://jqlblue.github.io/2015/03/30/does-startup-company-need-backend-development-engineer/</id>
+    <link href="https://blog.gaoyuan.xyz/2015/03/30/does-startup-company-need-backend-development-engineer/"/>
+    <id>https://blog.gaoyuan.xyz/2015/03/30/does-startup-company-need-backend-development-engineer/</id>
     <published>2015-03-30T10:05:00.000Z</published>
     <updated>2025-06-09T23:54:02.607Z</updated>
     
@@ -226,17 +255,17 @@
     
     
     
-    <category term="collect" scheme="https://jqlblue.github.io/categories/collect/"/>
+    <category term="collect" scheme="https://blog.gaoyuan.xyz/categories/collect/"/>
     
     
-    <category term="collect web bass" scheme="https://jqlblue.github.io/tags/collect-web-bass/"/>
+    <category term="collect web bass" scheme="https://blog.gaoyuan.xyz/tags/collect-web-bass/"/>
     
   </entry>
   
   <entry>
     <title>那个套模版的，放开你的F5</title>
-    <link href="https://jqlblue.github.io/2015/02/28/release-f5-for-template-engineer/"/>
-    <id>https://jqlblue.github.io/2015/02/28/release-f5-for-template-engineer/</id>
+    <link href="https://blog.gaoyuan.xyz/2015/02/28/release-f5-for-template-engineer/"/>
+    <id>https://blog.gaoyuan.xyz/2015/02/28/release-f5-for-template-engineer/</id>
     <published>2015-02-28T10:29:00.000Z</published>
     <updated>2025-06-09T23:54:02.607Z</updated>
     
@@ -247,21 +276,21 @@
     
     
     
-    <category term="collect" scheme="https://jqlblue.github.io/categories/collect/"/>
+    <category term="collect" scheme="https://blog.gaoyuan.xyz/categories/collect/"/>
     
     
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
     
-    <category term="collect" scheme="https://jqlblue.github.io/tags/collect/"/>
+    <category term="collect" scheme="https://blog.gaoyuan.xyz/tags/collect/"/>
     
-    <category term="python" scheme="https://jqlblue.github.io/tags/python/"/>
+    <category term="python" scheme="https://blog.gaoyuan.xyz/tags/python/"/>
     
   </entry>
   
   <entry>
     <title>互联网信息分类方法</title>
-    <link href="https://jqlblue.github.io/2015/01/25/categorize-web-information/"/>
-    <id>https://jqlblue.github.io/2015/01/25/categorize-web-information/</id>
+    <link href="https://blog.gaoyuan.xyz/2015/01/25/categorize-web-information/"/>
+    <id>https://blog.gaoyuan.xyz/2015/01/25/categorize-web-information/</id>
     <published>2015-01-25T11:12:00.000Z</published>
     <updated>2025-06-09T23:54:02.606Z</updated>
     
@@ -272,17 +301,17 @@
     
     
     
-    <category term="collect" scheme="https://jqlblue.github.io/categories/collect/"/>
+    <category term="collect" scheme="https://blog.gaoyuan.xyz/categories/collect/"/>
     
     
-    <category term="web 信息架构 IA" scheme="https://jqlblue.github.io/tags/web-%E4%BF%A1%E6%81%AF%E6%9E%B6%E6%9E%84-IA/"/>
+    <category term="web 信息架构 IA" scheme="https://blog.gaoyuan.xyz/tags/web-%E4%BF%A1%E6%81%AF%E6%9E%B6%E6%9E%84-IA/"/>
     
   </entry>
   
   <entry>
     <title>一周打造支付系统</title>
-    <link href="https://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week/"/>
-    <id>https://jqlblue.github.io/2014/11/23/build-payment-system-in-one-week/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/11/23/build-payment-system-in-one-week/"/>
+    <id>https://blog.gaoyuan.xyz/2014/11/23/build-payment-system-in-one-week/</id>
     <published>2014-11-23T06:34:00.000Z</published>
     <updated>2025-06-09T23:54:02.606Z</updated>
     
@@ -293,17 +322,17 @@
     
     
     
-    <category term="php" scheme="https://jqlblue.github.io/categories/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/categories/php/"/>
     
     
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
     
   </entry>
   
   <entry>
     <title>使用graphite和cabot搭建监控服务</title>
-    <link href="https://jqlblue.github.io/2014/10/01/use-graphite-and-alter-build-monitor-system/"/>
-    <id>https://jqlblue.github.io/2014/10/01/use-graphite-and-alter-build-monitor-system/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/10/01/use-graphite-and-alter-build-monitor-system/"/>
+    <id>https://blog.gaoyuan.xyz/2014/10/01/use-graphite-and-alter-build-monitor-system/</id>
     <published>2014-10-01T01:43:00.000Z</published>
     <updated>2025-06-09T23:54:02.605Z</updated>
     
@@ -314,19 +343,19 @@
     
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/devops/"/>
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/tags/devops/"/>
     
-    <category term="monitor" scheme="https://jqlblue.github.io/tags/monitor/"/>
+    <category term="monitor" scheme="https://blog.gaoyuan.xyz/tags/monitor/"/>
     
   </entry>
   
   <entry>
     <title>电商相关概念整理</title>
-    <link href="https://jqlblue.github.io/2014/09/22/e-commerce-idea-collection/"/>
-    <id>https://jqlblue.github.io/2014/09/22/e-commerce-idea-collection/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/09/22/e-commerce-idea-collection/"/>
+    <id>https://blog.gaoyuan.xyz/2014/09/22/e-commerce-idea-collection/</id>
     <published>2014-09-22T02:24:00.000Z</published>
     <updated>2025-06-09T23:54:02.604Z</updated>
     
@@ -337,17 +366,17 @@
     
     
     
-    <category term="collect" scheme="https://jqlblue.github.io/categories/collect/"/>
+    <category term="collect" scheme="https://blog.gaoyuan.xyz/categories/collect/"/>
     
     
-    <category term="Architecture" scheme="https://jqlblue.github.io/tags/Architecture/"/>
+    <category term="Architecture" scheme="https://blog.gaoyuan.xyz/tags/Architecture/"/>
     
   </entry>
   
   <entry>
     <title>在linux服务器之间同步用户账号</title>
-    <link href="https://jqlblue.github.io/2014/08/02/synchronization-user-account-on-linux/"/>
-    <id>https://jqlblue.github.io/2014/08/02/synchronization-user-account-on-linux/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/08/02/synchronization-user-account-on-linux/"/>
+    <id>https://blog.gaoyuan.xyz/2014/08/02/synchronization-user-account-on-linux/</id>
     <published>2014-08-02T09:26:00.000Z</published>
     <updated>2025-06-09T23:54:02.603Z</updated>
     
@@ -358,19 +387,19 @@
     
     
     
-    <category term="linux" scheme="https://jqlblue.github.io/categories/linux/"/>
+    <category term="linux" scheme="https://blog.gaoyuan.xyz/categories/linux/"/>
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/linux/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/linux/devops/"/>
     
     
-    <category term="linux" scheme="https://jqlblue.github.io/tags/linux/"/>
+    <category term="linux" scheme="https://blog.gaoyuan.xyz/tags/linux/"/>
     
   </entry>
   
   <entry>
     <title>手动刷入android 4.4.3 OTA 更新包</title>
-    <link href="https://jqlblue.github.io/2014/06/08/manual-update-android-ota-update/"/>
-    <id>https://jqlblue.github.io/2014/06/08/manual-update-android-ota-update/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/06/08/manual-update-android-ota-update/"/>
+    <id>https://blog.gaoyuan.xyz/2014/06/08/manual-update-android-ota-update/</id>
     <published>2014-06-07T22:35:00.000Z</published>
     <updated>2025-06-09T23:54:02.602Z</updated>
     
@@ -381,17 +410,17 @@
     
     
     
-    <category term="mobile" scheme="https://jqlblue.github.io/categories/mobile/"/>
+    <category term="mobile" scheme="https://blog.gaoyuan.xyz/categories/mobile/"/>
     
     
-    <category term="mobile" scheme="https://jqlblue.github.io/tags/mobile/"/>
+    <category term="mobile" scheme="https://blog.gaoyuan.xyz/tags/mobile/"/>
     
   </entry>
   
   <entry>
     <title>再话tcpcopy的胞弟gryphon</title>
-    <link href="https://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/"/>
-    <id>https://jqlblue.github.io/2014/05/28/tcpcopy-gryphon-introduction/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/05/28/tcpcopy-gryphon-introduction/"/>
+    <id>https://blog.gaoyuan.xyz/2014/05/28/tcpcopy-gryphon-introduction/</id>
     <published>2014-05-28T07:57:00.000Z</published>
     <updated>2025-06-09T23:54:02.601Z</updated>
     
@@ -402,17 +431,17 @@
     
     
     
-    <category term="devops" scheme="https://jqlblue.github.io/categories/devops/"/>
+    <category term="devops" scheme="https://blog.gaoyuan.xyz/categories/devops/"/>
     
     
-    <category term="devops, linux" scheme="https://jqlblue.github.io/tags/devops-linux/"/>
+    <category term="devops, linux" scheme="https://blog.gaoyuan.xyz/tags/devops-linux/"/>
     
   </entry>
   
   <entry>
     <title>一个使用curl请求https资源的问题排查</title>
-    <link href="https://jqlblue.github.io/2014/05/14/a-trouble-in-request-https-in-curl/"/>
-    <id>https://jqlblue.github.io/2014/05/14/a-trouble-in-request-https-in-curl/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/05/14/a-trouble-in-request-https-in-curl/"/>
+    <id>https://blog.gaoyuan.xyz/2014/05/14/a-trouble-in-request-https-in-curl/</id>
     <published>2014-05-14T06:50:00.000Z</published>
     <updated>2025-06-09T23:54:02.601Z</updated>
     
@@ -423,19 +452,19 @@
     
     
     
-    <category term="php" scheme="https://jqlblue.github.io/categories/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/categories/php/"/>
     
     
-    <category term="linux" scheme="https://jqlblue.github.io/tags/linux/"/>
+    <category term="linux" scheme="https://blog.gaoyuan.xyz/tags/linux/"/>
     
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
     
   </entry>
   
   <entry>
     <title>php中的单例模式面面观</title>
-    <link href="https://jqlblue.github.io/2014/04/26/singleton-pattern-in-php/"/>
-    <id>https://jqlblue.github.io/2014/04/26/singleton-pattern-in-php/</id>
+    <link href="https://blog.gaoyuan.xyz/2014/04/26/singleton-pattern-in-php/"/>
+    <id>https://blog.gaoyuan.xyz/2014/04/26/singleton-pattern-in-php/</id>
     <published>2014-04-26T12:47:00.000Z</published>
     <updated>2025-06-09T23:54:02.601Z</updated>
     
@@ -446,37 +475,12 @@
     
     
     
-    <category term="php" scheme="https://jqlblue.github.io/categories/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/categories/php/"/>
     
     
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="php" scheme="https://blog.gaoyuan.xyz/tags/php/"/>
     
-    <category term="pattren" scheme="https://jqlblue.github.io/tags/pattren/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何静态编译php</title>
-    <link href="https://jqlblue.github.io/2014/04/09/statically-compile-php/"/>
-    <id>https://jqlblue.github.io/2014/04/09/statically-compile-php/</id>
-    <published>2014-04-09T10:13:00.000Z</published>
-    <updated>2025-06-09T23:54:02.600Z</updated>
-    
-    <content type="html"><![CDATA[<p>有些时候，我们写了一个php脚本，但是对方的服务器上没有php环境。</p><p>这时，我们可以通过静态方式编译php，并将相关扩展一起打包进php可执行文件，然后在运行脚本时指定php binary。</p><span id="more"></span><p>安装步骤如下：</p><h1 id="准备源文件"><a href="#准备源文件" class="headerlink" title="准备源文件"></a>准备源文件</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget -c http://www.php.net/get/php-5.5.11.tar.gz/from/this/mirror</span><br><span class="line">tar zxvf php-5.5.11.tar.gz</span><br><span class="line">wget http://pecl.php.net/get/redis-2.2.5.tgz</span><br><span class="line">tar xvf redis-2.2.5.tgz</span><br><span class="line">mv redis-2.2.5 php-5.5.11/ext/redis</span><br></pre></td></tr></table></figure><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><h2 id="重新生成configure"><a href="#重新生成configure" class="headerlink" title="重新生成configure"></a>重新生成configure</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd php-5.5.11</span><br><span class="line">rm -f ./configure</span><br><span class="line">./buildconf --force</span><br></pre></td></tr></table></figure><h2 id="configure"><a href="#configure" class="headerlink" title="configure"></a>configure</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">./configure LDFLAGS=-static \</span><br><span class="line">--prefix=/usr/local/php5-static \</span><br><span class="line">--disable-all \</span><br><span class="line">--enable-shared=no \</span><br><span class="line">--enable-static=yes \</span><br><span class="line">--enable-inline-optimization \</span><br><span class="line">--enable-hash \</span><br><span class="line">--enable-mbstring \</span><br><span class="line">--with-layout=GNU \</span><br><span class="line">--enable-filter \</span><br><span class="line">--with-pcre-regex \</span><br><span class="line">--with-zlib \</span><br><span class="line">--enable-json \</span><br><span class="line">--enable-ctype \</span><br><span class="line">--disable-redis-session \</span><br><span class="line">--enable-redis</span><br></pre></td></tr></table></figure><h2 id="修改Makefile"><a href="#修改Makefile" class="headerlink" title="修改Makefile"></a>修改Makefile</h2><p>将</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BUILD_CLI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CLI_PATH)</span><br><span class="line">BUILD_CGI = $(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $(SAPI_CGI_PATH)</span><br></pre></td></tr></table></figure><p>替换成</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BUILD_CLI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CLI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CLI_PATH)</span><br><span class="line">BUILD_CGI = $(LIBTOOL) --mode=link $(CC) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS_PROGRAM) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_BINARY_OBJS) $(PHP_CGI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -all-static -o $(SAPI_CGI_PATH)</span><br></pre></td></tr></table></figure><p>即：</p><p>在<code>BUILD_CLI</code>和<code>BUILD_CGI</code>对应的行中移除<code>-export-dynamic</code>，在<code>-o $(SAPI_CGI_PATH)</code>和<code>-o $(SAPI_CLI_PATH)</code>之前，添加<code>-all-static</code></p><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make LDFLAGS=-ldl</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure><h1 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h1><p>在命令行执行</p><pre><code>$ file /usr/local/php5-static/bin/php/usr/local/php5-static/bin/php: ELF 64-bit LSB executable, AMD x86-64, version 1 (SYSV), for GNU/Linux 2.6.9, statically linked, for GNU/Linux 2.6.9, not stripped$ /usr/local/php5-static/bin/php -m[PHP Modules]CorectypedateeregfilterhashjsonmbstringpcreredisReflectionSPLstandardzlib[Zend Modules]</code></pre><p>因为可执行文件中包含了调试信息，所以体积较大</p><pre><code>$ ll -h /usr/local/php5-static/bin/php-rwxr-xr-x 1 root root 18M 04-09 18:11 /usr/local/php5-static/bin/php</code></pre><p>可以通过<code>strip</code>命令移除调试信息</p><pre><code>$ sudo strip /usr/local/php5-static/bin/php$ ll -h /usr/local/php5-static/bin/php-rwxr-xr-x 1 root root 6.1M 04-09 18:11 /usr/local/php5-static/bin/php</code></pre><table><thead><tr><th align="center">原始文件大小</th><th align="center">去除符号表后大小</th></tr></thead><tbody><tr><td align="center"><code>18M</code></td><td align="center"><strong>6.1M</strong></td></tr></tbody></table><p>** reference :**</p><p>[^1] <a href="http://www.php.net/manual/zh/install.pecl.static.php">http://www.php.net/manual/zh/install.pecl.static.php</a></p><p>[^2] <a href="http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454">http://d.hatena.ne.jp/shimooka/comment/20110216/1297827454</a></p><p>[^3] <a href="http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html">http://www.gnu.org/software/libtool/manual/html_node/Link-mode.html</a></p><p>[^4] <a href="http://markmail.org/message/cpoenglavs4vwv32">http://markmail.org/message/cpoenglavs4vwv32</a></p>]]></content>
-    
-    
-    <summary type="html">php静态编译，如何在linix操作系统上，通过静态编译的方式，编译一个可以随意拷贝的php可执行文件。</summary>
-    
-    
-    
-    <category term="php" scheme="https://jqlblue.github.io/categories/php/"/>
-    
-    
-    <category term="devops" scheme="https://jqlblue.github.io/tags/devops/"/>
-    
-    <category term="linux" scheme="https://jqlblue.github.io/tags/linux/"/>
-    
-    <category term="php" scheme="https://jqlblue.github.io/tags/php/"/>
+    <category term="pattren" scheme="https://blog.gaoyuan.xyz/tags/pattren/"/>
     
   </entry>
   
